@@ -181,6 +181,49 @@ class CinematicSoundEngine {
       osc.stop(now + 0.9);
     } catch {}
   }
+
+  public playKeyClick() {
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(800 + Math.random() * 400, now);
+
+      gain.gain.setValueAtTime(0.008, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(now);
+      osc.stop(now + 0.035);
+    } catch {}
+  }
+
+  public playFootstep() {
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(95 + Math.random() * 20, now);
+      osc.frequency.exponentialRampToValueAtTime(45, now + 0.05);
+
+      gain.gain.setValueAtTime(0.006, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(now);
+      osc.stop(now + 0.05);
+    } catch {}
+  }
 }
 
 export const soundEngine = new CinematicSoundEngine();

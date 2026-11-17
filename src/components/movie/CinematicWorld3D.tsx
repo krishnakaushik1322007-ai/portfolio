@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useMovie } from '@/context/MovieContext';
 import { KrishnaCharacterRig, KrishnaAnimationState } from './KrishnaCharacterRig';
+import { soundEngine } from './CinematicSoundEngine';
 
 // Dynamic 2D Canvas-based crisp diegetic texture generator for 3D signage
 function createDiegeticSign(title: string, subtitle?: string, accentColor = '#38bdf8', borderColor = 'rgba(56, 189, 248, 0.4)') {
@@ -13,33 +14,27 @@ function createDiegeticSign(title: string, subtitle?: string, accentColor = '#38
   canvas.height = 320;
   const ctx = canvas.getContext('2d');
   if (ctx) {
-    // Backdrop panel
-    ctx.fillStyle = 'rgba(5, 10, 22, 0.9)';
+    ctx.fillStyle = 'rgba(5, 10, 22, 0.92)';
     ctx.fillRect(0, 0, 1024, 320);
 
-    // Glowing border frame
     ctx.strokeStyle = borderColor;
     ctx.lineWidth = 6;
     ctx.strokeRect(8, 8, 1008, 304);
 
-    // Top status tick
     ctx.fillStyle = accentColor;
     ctx.fillRect(40, 24, 60, 6);
 
-    // Title
     ctx.fillStyle = accentColor;
-    ctx.font = 'bold 52px "Cinzel", "Times New Roman", serif';
+    ctx.font = 'bold 50px "Cinzel", "Times New Roman", serif';
     ctx.textAlign = 'center';
     ctx.fillText(title, 512, 135);
 
-    // Subtitle
     if (subtitle) {
       ctx.fillStyle = '#cbd5e1';
       ctx.font = '28px "Courier New", monospace';
       ctx.fillText(subtitle, 512, 215);
     }
 
-    // Bottom telemetry line
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -70,15 +65,15 @@ export default function CinematicWorld3D() {
     const container = containerRef.current;
     if (!container) return;
 
-    // 1. Scene & Atmosphere Fog
+    // 1. Scene & Atmospheric Volumetric Fog
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050914, 0.005);
+    scene.fog = new THREE.FogExp2(0x050914, 0.0048);
 
     const camera = new THREE.PerspectiveCamera(
-      52,
+      50,
       container.clientWidth / container.clientHeight,
       0.1,
-      1300
+      1400
     );
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -90,7 +85,7 @@ export default function CinematicWorld3D() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // 2. Lighting System
+    // 2. Dynamic Lighting System with Environment Gradients
     const ambientLight = new THREE.AmbientLight(0x283854, 1.4);
     scene.add(ambientLight);
 
@@ -104,13 +99,32 @@ export default function CinematicWorld3D() {
     const pointLight = new THREE.PointLight(0x38bdf8, 3.5, 130);
     scene.add(pointLight);
 
+    // Subtle atmospheric dust motes
+    const particleCount = 200;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePos = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePos[i] = (Math.random() - 0.5) * 40;
+      particlePos[i + 1] = Math.random() * 15;
+      particlePos[i + 2] = Math.random() * 850;
+    }
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.12,
+      color: 0x93c5fd,
+      transparent: true,
+      opacity: 0.45
+    });
+    const dustParticles = new THREE.Points(particleGeo, particleMat);
+    scene.add(dustParticles);
+
     const textureLoader = new THREE.TextureLoader();
 
     // 3. Krishna Kaushik 3D Character Rig (Protagonist)
     const krishna = new KrishnaCharacterRig();
     scene.add(krishna.group);
 
-    // Interactive clickable project mesh registration
+    // Clickable project mesh registry
     const projectPortals: { mesh: THREE.Mesh; slug: string; title: string }[] = [];
 
     // =========================================================================
@@ -134,7 +148,6 @@ export default function CinematicWorld3D() {
     stripeMesh.position.y = 0.05;
     scene.add(stripeMesh);
 
-    // Mountain silhouettes
     const mountainGeo = new THREE.ConeGeometry(28, 55, 5);
     const mountainMat = new THREE.MeshStandardMaterial({ color: 0x090f1d, flatShading: true });
     for (let i = 0; i < 18; i++) {
@@ -145,7 +158,6 @@ export default function CinematicWorld3D() {
       scene.add(mt);
     }
 
-    // Zone 1 Backdrop Plate
     textureLoader.load('/movie/scene1_mountain_road.jpg', (tex) => {
       const plateGeo = new THREE.PlaneGeometry(80, 45);
       const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
@@ -166,7 +178,6 @@ export default function CinematicWorld3D() {
     quadPavement.position.set(0, -0.05, 125);
     scene.add(quadPavement);
 
-    // Colonnade Columns & Archway
     const colGeo = new THREE.CylinderGeometry(0.65, 0.65, 15, 16);
     const colMat = new THREE.MeshStandardMaterial({ color: 0x1e2738, roughness: 0.6 });
     for (let z = 90; z <= 165; z += 16) {
@@ -179,7 +190,7 @@ export default function CinematicWorld3D() {
       scene.add(colL, colR, lintel);
     }
 
-    // Diegetic 3D Sign on University Gateway Arch at Z = 92
+    // Diegetic 3D Sign on University Gateway Arch
     const univSignTex = createDiegeticSign('SHOOLINI UNIVERSITY', 'Faculty of Engineering & Artificial Intelligence', '#e5b061', 'rgba(229,176,97,0.5)');
     const univSignMesh = new THREE.Mesh(
       new THREE.PlaneGeometry(16, 5),
@@ -202,13 +213,11 @@ export default function CinematicWorld3D() {
     notebook.rotation.y = 0.15;
     deskGroup.add(notebook);
 
-    // Chair
     const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.06, 0.55), deskWoodMat);
     chairSeat.position.set(0, 0.48, -0.55);
     deskGroup.add(chairSeat);
     scene.add(deskGroup);
 
-    // Zone 2 Backdrop Plate
     textureLoader.load('/movie/scene2_university.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(80, 45),
@@ -230,7 +239,6 @@ export default function CinematicWorld3D() {
     labFloor.position.set(0, -0.05, 215);
     scene.add(labFloor);
 
-    // Glowing server racks
     const serverGeo = new THREE.BoxGeometry(2, 9, 2);
     const serverMat = new THREE.MeshStandardMaterial({ color: 0x0c1322, roughness: 0.4 });
     const serverLedMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x38bdf8, emissiveIntensity: 1.5 });
@@ -246,14 +254,13 @@ export default function CinematicWorld3D() {
       scene.add(sL, ledL, sR, ledR);
     }
 
-    // Workstation Desk at Z = 230 with Dual Monitors
+    // Workstation Desk at Z = 230 with Dual Glowing Monitors
     const labWorkstation = new THREE.Group();
     labWorkstation.position.set(0, 0, 230);
     const labDeskTop = new THREE.Mesh(new THREE.BoxGeometry(3, 0.08, 1.4), new THREE.MeshStandardMaterial({ color: 0x0a101d, metalness: 0.9, roughness: 0.3 }));
     labDeskTop.position.set(0, 0.75, 0);
     labWorkstation.add(labDeskTop);
 
-    // Dual Glowing Monitors with dynamic textures
     const codeScreenTex = createDiegeticSign('PYTHON // C++ // SQL', 'NEXT.JS // GEMINI RAG // FAISS', '#38bdf8', 'rgba(56,189,248,0.6)');
     const monMat = new THREE.MeshBasicMaterial({ map: codeScreenTex });
     const screen1 = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 0.9), monMat);
@@ -265,7 +272,6 @@ export default function CinematicWorld3D() {
     labWorkstation.add(screen1, screen2);
     scene.add(labWorkstation);
 
-    // Zone 3 Backdrop Plate
     textureLoader.load('/movie/scene3_computer_lab.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(80, 45),
@@ -296,7 +302,6 @@ export default function CinematicWorld3D() {
     ring2.rotation.x = Math.PI / 2;
     scene.add(ring1, ring2);
 
-    // CampusOS 3D Diegetic Architecture Sign
     const campusosSignTex = createDiegeticSign('CAMPUSOS AI // FLAGSHIP', '5 Stakeholders • 510 QA Suites • PostgreSQL + Gemini RAG', '#e5b061', 'rgba(229,176,97,0.7)');
     const campusosSign = new THREE.Mesh(
       new THREE.PlaneGeometry(18, 5.5),
@@ -305,7 +310,6 @@ export default function CinematicWorld3D() {
     campusosSign.position.set(0, 8, foundryZ + 15);
     scene.add(campusosSign);
 
-    // Clickable CampusOS Monolith Portal
     const campusosPortal = new THREE.Mesh(
       new THREE.BoxGeometry(5.5, 9, 1),
       new THREE.MeshStandardMaterial({ color: 0x081220, emissive: 0xe5b061, emissiveIntensity: 0.4, metalness: 0.8 })
@@ -314,7 +318,6 @@ export default function CinematicWorld3D() {
     scene.add(campusosPortal);
     projectPortals.push({ mesh: campusosPortal, slug: 'campusos-ai', title: 'CampusOS AI' });
 
-    // Zone 4 Backdrop Plate
     textureLoader.load('/movie/scene4_campusos.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(80, 45),
@@ -337,7 +340,6 @@ export default function CinematicWorld3D() {
     gyanixSign.position.set(0, 8.5, gyanixZ + 15);
     scene.add(gyanixSign);
 
-    // Clickable Gyanix Portal
     const gyanixPortal = new THREE.Mesh(
       new THREE.BoxGeometry(5, 8.5, 1),
       new THREE.MeshStandardMaterial({ color: 0x061122, emissive: 0x38bdf8, emissiveIntensity: 0.45, metalness: 0.8 })
@@ -346,7 +348,6 @@ export default function CinematicWorld3D() {
     scene.add(gyanixPortal);
     projectPortals.push({ mesh: gyanixPortal, slug: 'gyanix', title: 'Gyanix' });
 
-    // Glowing curriculum rings around Gyanix
     const gRing = new THREE.Mesh(
       new THREE.TorusGeometry(7, 0.15, 16, 48),
       new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x38bdf8, emissiveIntensity: 0.8 })
@@ -371,14 +372,12 @@ export default function CinematicWorld3D() {
       pMesh.position.set(p.x, 3.8, p.z);
       scene.add(pMesh);
 
-      // Glowing outer edge
       const rim = new THREE.Mesh(
         new THREE.BoxGeometry(4.4, 7.4, 0.85),
         new THREE.MeshStandardMaterial({ color: p.color, emissive: p.color, emissiveIntensity: 0.9, wireframe: true })
       );
       pMesh.add(rim);
 
-      // Diegetic name sign above portal
       const pSignTex = createDiegeticSign(p.title, p.sub, `#${p.color.toString(16).padStart(6, '0')}`, 'rgba(255,255,255,0.3)');
       const pSign = new THREE.Mesh(new THREE.PlaneGeometry(8, 2.5), new THREE.MeshBasicMaterial({ map: pSignTex, transparent: true }));
       pSign.position.set(p.x, 8.2, p.z);
@@ -405,7 +404,6 @@ export default function CinematicWorld3D() {
       scene.add(pod);
     }
 
-    // Diegetic Facility Sign at Z = 605
     const corizoSignTex = createDiegeticSign('CORIZO // COLLABORATIVE PROGRAMME', 'In Collaboration with IIT Bombay • Stage 1: IoT & Robotics (Active)', '#10b981', 'rgba(16,185,129,0.7)');
     const corizoSign = new THREE.Mesh(
       new THREE.PlaneGeometry(18, 5.5),
@@ -414,7 +412,7 @@ export default function CinematicWorld3D() {
     corizoSign.position.set(0, 9, 605);
     scene.add(corizoSign);
 
-    // Robotic Arm & IoT Workbench at Z = 645
+    // Workbench with Articulated Robotic Arm
     const roboticsBench = new THREE.Group();
     roboticsBench.position.set(0, 0, 645);
     const benchTop = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.1, 1.4), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.7 }));
@@ -436,7 +434,6 @@ export default function CinematicWorld3D() {
     roboticsBench.add(iotBoard);
     scene.add(roboticsBench);
 
-    // Zone 7 Backdrop Plate
     textureLoader.load('/movie/scene5_robotics.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(80, 45),
@@ -458,7 +455,6 @@ export default function CinematicWorld3D() {
     summit.position.set(0, 0, summitZ);
     scene.add(summit);
 
-    // Glowing Achievement Monolith (Anveshan Round 2 Milestone)
     const monolith = new THREE.Mesh(
       new THREE.BoxGeometry(3.5, 9, 1.2),
       new THREE.MeshStandardMaterial({ color: 0x8b5cf6, emissive: 0x8b5cf6, emissiveIntensity: 0.85 })
@@ -466,7 +462,6 @@ export default function CinematicWorld3D() {
     monolith.position.set(0, 16.5, summitZ);
     scene.add(monolith);
 
-    // Diegetic Milestone Sign
     const anveshanSignTex = createDiegeticSign('ANVESHAN HACKATHON // MILESTONE', 'Participant • Advanced to Round 2 (Click to Inspect Certificate)', '#c084fc', 'rgba(192,132,252,0.8)');
     const anveshanSign = new THREE.Mesh(
       new THREE.PlaneGeometry(16, 5),
@@ -475,7 +470,6 @@ export default function CinematicWorld3D() {
     anveshanSign.position.set(0, 22.5, summitZ - 2);
     scene.add(anveshanSign);
 
-    // Zone 8 Backdrop Plate
     textureLoader.load('/movie/scene6_summit.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(80, 45),
@@ -501,7 +495,6 @@ export default function CinematicWorld3D() {
       scene.add(tower);
     }
 
-    // Rooftop Observation Deck at Z = 835
     const deck = new THREE.Mesh(
       new THREE.BoxGeometry(26, 2, 32),
       new THREE.MeshStandardMaterial({ color: 0x121a2c, roughness: 0.5 })
@@ -509,13 +502,11 @@ export default function CinematicWorld3D() {
     deck.position.set(0, 8.5, 835);
     scene.add(deck);
 
-    // Glass safety railing
     const railMat = new THREE.MeshPhysicalMaterial({ color: 0x93c5fd, transmission: 0.8, transparent: true, opacity: 0.5, roughness: 0.1 });
     const railFront = new THREE.Mesh(new THREE.BoxGeometry(26, 1.2, 0.1), railMat);
     railFront.position.set(0, 10.1, 850.8);
     scene.add(railFront);
 
-    // Zone 9 Backdrop Plate
     textureLoader.load('/movie/scene7_city_sunrise.jpg', (tex) => {
       const plate = new THREE.Mesh(
         new THREE.PlaneGeometry(90, 50),
@@ -547,7 +538,6 @@ export default function CinematicWorld3D() {
         }
       }
 
-      // Check monolith click for Certificate in Zone 8
       const monoIntersects = raycaster.intersectObject(monolith);
       if (monoIntersects.length > 0) {
         setIsCertificateModalOpen(true);
@@ -557,17 +547,19 @@ export default function CinematicWorld3D() {
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
 
     // =========================================================================
-    // Cinema Loop & Character Skeletal Animation Across 9 Scenes
+    // Cinema Loop & Cinematic Camera Choreography
     // =========================================================================
     let animId: number;
     let clock = new THREE.Clock();
+    let lastStepTime = 0;
+    let lastKeyTime = 0;
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
       const time = clock.getElapsedTime();
       const p = progressRef.current; // 0.0 to 1.0
 
-      // Map progress to world coordinate Z (0 to 840)
       const currentZ = p * 840;
 
       let animState: KrishnaAnimationState = {
@@ -582,77 +574,193 @@ export default function CinematicWorld3D() {
       let charZ = 0;
       let charRotY = 0;
 
+      // Desired camera target position and lookAt
+      let camTargetX = 0;
+      let camTargetY = 3.6;
+      let camTargetZ = currentZ;
+      let camLookAtX = 0;
+      let camLookAtY = 1.6;
+      let camLookAtZ = currentZ + 12;
+
+      // -----------------------------------------------------------------------
+      // SCENE 01: The Beginning (p: 0.00 to 0.11)
+      // -----------------------------------------------------------------------
       if (p < 0.11) {
-        // ZONE 01: The Beginning — Mountain Road at Sunrise
         animState.action = 'walk';
         charZ = currentZ + 12;
         charX = Math.sin(charZ * 0.04) * 2.2;
         charY = 0;
         charRotY = 0;
-        animState.headTurn = Math.sin(time * 0.8) * 0.25;
+
+        if (p < 0.04) {
+          // Low third-person follow shot tracking behind Krishna
+          camTargetX = charX + 0.5;
+          camTargetY = 2.2;
+          camTargetZ = charZ - 7.5;
+          camLookAtX = charX;
+          camLookAtY = 1.5;
+          camLookAtZ = charZ + 10;
+        } else if (p >= 0.04 && p < 0.085) {
+          // Dynamic Medium Arc to Front 3/4 Reveal of Krishna's face & glasses
+          const orbitAngle = ((p - 0.04) / 0.045) * Math.PI * 0.5;
+          camTargetX = charX - Math.sin(orbitAngle) * 3.4;
+          camTargetY = 1.85;
+          camTargetZ = charZ + Math.cos(orbitAngle) * 3.6;
+          camLookAtX = charX;
+          camLookAtY = 1.6;
+          camLookAtZ = charZ;
+          animState.headTurn = 0.2;
+        } else {
+          // Gliding forward ahead of Krishna looking back
+          camTargetX = charX - 1.2;
+          camTargetY = 2.4;
+          camTargetZ = charZ - 6.5;
+          camLookAtX = charX;
+          camLookAtY = 1.6;
+          camLookAtZ = charZ + 8;
+        }
+
+        // Footstep tick sound
+        if (time - lastStepTime > 0.42) {
+          soundEngine.playFootstep();
+          lastStepTime = time;
+        }
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 02: University Quad & Classroom (p: 0.11 to 0.22)
+      // -----------------------------------------------------------------------
       else if (p >= 0.11 && p < 0.22) {
-        // ZONE 02: University Quad & Classroom
         if (p < 0.16) {
           animState.action = 'walk';
           charZ = currentZ + 10;
           charX = 0;
           charY = 0;
           charRotY = 0;
+          // Wide architectural establishing shot through colonnade
+          camTargetX = -5.5;
+          camTargetY = 5.5;
+          camTargetZ = currentZ - 8;
+          camLookAtX = 0;
+          camLookAtY = 2.0;
+          camLookAtZ = charZ + 8;
         } else {
+          // Seated at study desk with notebook
           animState.action = 'sit_study';
           charZ = 135 - 0.45;
           charX = 0;
           charY = 0;
           charRotY = Math.PI;
-          animState.lookUp = -0.25;
+          animState.lookUp = -0.3;
+          // Intimate Over-The-Shoulder (OTS) study shot
+          camTargetX = 0.85;
+          camTargetY = 1.55;
+          camTargetZ = charZ - 2.2;
+          camLookAtX = -0.15;
+          camLookAtY = 0.85;
+          camLookAtZ = charZ + 0.6;
         }
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 03: Learning & Technology Lab (p: 0.22 to 0.33)
+      // -----------------------------------------------------------------------
       else if (p >= 0.22 && p < 0.33) {
-        // ZONE 03: Learning & Technology Lab
         if (p < 0.27) {
           animState.action = 'walk';
           charZ = currentZ + 10;
           charX = 0;
           charY = 0;
           charRotY = 0;
+          camTargetX = 4.2;
+          camTargetY = 3.8;
+          camTargetZ = currentZ - 6;
+          camLookAtX = 0;
+          camLookAtY = 2.0;
+          camLookAtZ = charZ + 8;
         } else {
+          // Seated typing at dual workstation
           animState.action = 'type_code';
           charZ = 230 - 0.45;
           charX = 0;
           charY = 0;
           charRotY = Math.PI;
           animState.headTurn = Math.sin(time * 1.5) * 0.2;
+          // Close Over-The-Shoulder code monitor framing
+          camTargetX = -0.95;
+          camTargetY = 1.48;
+          camTargetZ = charZ - 2.1;
+          camLookAtX = 0.1;
+          camLookAtY = 1.25;
+          camLookAtZ = charZ + 0.8;
+
+          // Keyboard tactile click
+          if (time - lastKeyTime > 0.12) {
+            soundEngine.playKeyClick();
+            lastKeyTime = time;
+          }
         }
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 04: CampusOS AI Flagship Foundry (p: 0.33 to 0.46)
+      // -----------------------------------------------------------------------
       else if (p >= 0.33 && p < 0.46) {
-        // ZONE 04: CampusOS AI Flagship Foundry
         animState.action = 'work_campusos';
         charZ = 330 - 1.5;
         charX = -2;
         charY = 0;
         charRotY = 0.4;
+        // Dynamic low-angle tracking shot looking up heroically
+        camTargetX = charX + 3.4;
+        camTargetY = 2.2;
+        camTargetZ = charZ - 4.5;
+        camLookAtX = charX;
+        camLookAtY = 2.1;
+        camLookAtZ = charZ + 2;
+
+        if (time - lastKeyTime > 0.15) {
+          soundEngine.playKeyClick();
+          lastKeyTime = time;
+        }
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 05: Gyanix Socratic AI Environment (p: 0.46 to 0.58)
+      // -----------------------------------------------------------------------
       else if (p >= 0.46 && p < 0.58) {
-        // ZONE 05: Gyanix Socratic AI Environment
         animState.action = 'inspect_projects';
         charZ = 435 - 1.5;
         charX = -1.5;
         charY = 0;
         charRotY = 0.3;
         animState.armReach = 0.75;
+        // Lateral orbit framing Socratic rings
+        camTargetX = charX - 3.8;
+        camTargetY = 2.9;
+        camTargetZ = charZ - 3.8;
+        camLookAtX = charX + 1.2;
+        camLookAtY = 1.8;
+        camLookAtZ = charZ + 1.5;
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 06: Specialized Projects (p: 0.58 to 0.70)
+      // -----------------------------------------------------------------------
       else if (p >= 0.58 && p < 0.70) {
-        // ZONE 06: Specialized Projects (CivicLens, Financial Advisor, RAG, ZENETH)
         animState.action = 'inspect_projects';
         charZ = currentZ + 8;
         charX = Math.sin(charZ * 0.05) * 5;
         charY = 0;
         charRotY = -0.3;
         animState.armReach = 0.85;
+        // Steady-cam dolly shot tracking past portals
+        camTargetX = -charX * 0.6;
+        camTargetY = 3.2;
+        camTargetZ = charZ - 8.5;
+        camLookAtX = charX;
+        camLookAtY = 2.2;
+        camLookAtZ = charZ + 4;
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 07: Professional Journey — Robotics & IoT (p: 0.70 to 0.80)
+      // -----------------------------------------------------------------------
       else if (p >= 0.70 && p < 0.80) {
-        // ZONE 07: Professional Journey — Corizo / IIT Bombay Robotics & IoT
         animState.action = 'inspect_robotics';
         charZ = 645 - 0.7;
         charX = -0.5;
@@ -660,65 +768,84 @@ export default function CinematicWorld3D() {
         charRotY = 0.3;
         animState.armReach = 0.9;
         animState.lookUp = -0.15;
+        // Medium close-up on Krishna inspecting the robotic arm
+        camTargetX = charX + 1.95;
+        camTargetY = 1.65;
+        camTargetZ = charZ - 2.4;
+        camLookAtX = charX - 0.1;
+        camLookAtY = 1.35;
+        camLookAtZ = charZ + 0.6;
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 08: Mountain Summit & Anveshan Hackathon (p: 0.80 to 0.90)
+      // -----------------------------------------------------------------------
       else if (p >= 0.80 && p < 0.90) {
-        // ZONE 08: Mountain Summit & Anveshan Hackathon
         animState.action = 'summit_view';
         charZ = 745 - 2;
         charX = 0;
         charY = 13.5;
         charRotY = 0;
         animState.lookUp = 0.15;
+        // Epic wide pullback revealing mountain peak & rising sun
+        camTargetX = Math.sin(time * 0.2) * 8.5;
+        camTargetY = 18.5;
+        camTargetZ = charZ - 18.5;
+        camLookAtX = 0;
+        camLookAtY = 14.5;
+        camLookAtZ = charZ + 2;
       } 
+      // -----------------------------------------------------------------------
+      // SCENE 09: The Final Destination — Futuristic Metropolis (p: 0.90 to 1.00)
+      // -----------------------------------------------------------------------
       else {
-        // ZONE 09: The Final Destination — Futuristic Metropolis
         animState.action = 'future_look';
         charZ = 835;
         charX = 0;
         charY = 9.5;
         charRotY = 0;
         animState.lookUp = 0.1;
+        // Low-angle heroic rising camera shot overlooking the city
+        const rise = (p - 0.90) * 45;
+        camTargetX = Math.sin(time * 0.15) * 3.5;
+        camTargetY = 11.5 + rise * 0.4;
+        camTargetZ = charZ - 9.5;
+        camLookAtX = 0;
+        camLookAtY = 12.0 + rise * 0.3;
+        camLookAtZ = charZ + 25;
       }
 
-      // Smoothly update Krishna Character Rig position & bones
+      // Smoothly update Krishna Character Rig with delta time
       krishna.group.position.set(charX, charY, charZ);
       krishna.group.rotation.y = charRotY;
-      krishna.update(time, animState);
+      krishna.update(time, animState, delta);
 
-      // Camera Kinematics (Follow dolly, orbit, framing)
-      let camTargetZ = currentZ;
-      let camTargetX = Math.sin(currentZ * 0.035) * 4.2;
-      let camTargetY = 3.6;
-
-      if (p < 0.11) {
-        // Zone 1 camera approach & face reveal orbit
-        if (p > 0.04 && p < 0.09) {
-          // Camera arcs slightly around to front-left to reveal Krishna's face and glasses
-          camTargetX = Math.sin(time * 0.4) * 3.5;
-          camTargetZ = charZ - 4.5;
-          camTargetY = 2.4;
-        }
-      } else if (p >= 0.80 && p < 0.90) {
-        // Summit elevation
-        camTargetY = 17.5;
-        camTargetZ = 732;
-        camTargetX = Math.sin(time * 0.3) * 6;
-      } else if (p >= 0.90) {
-        // Observation deck elevation
-        camTargetY = 12.5;
-        camTargetZ = 820;
-        camTargetX = Math.sin(time * 0.25) * 4;
-      }
-
+      // Smooth Camera Kinematics (Lerp damping)
       camera.position.x += (camTargetX - camera.position.x) * 0.08;
       camera.position.y += (camTargetY - camera.position.y) * 0.08;
-      camera.position.z += (camTargetZ - camera.position.z) * 0.1;
+      camera.position.z += (camTargetZ - camera.position.z) * 0.09;
 
-      const lookAtTarget = new THREE.Vector3(charX * 0.5, charY + 1.6, charZ + 8);
-      camera.lookAt(lookAtTarget);
+      const lookTarget = new THREE.Vector3(camLookAtX, camLookAtY, camLookAtZ);
+      camera.lookAt(lookTarget);
 
-      // Dynamic light tracking protagonist
+      // Compute Krishna's projected 2D screen coordinate for Safe-Zone Layout
+      const headWorld = new THREE.Vector3();
+      krishna.headBone.getWorldPosition(headWorld);
+      const screenPos = headWorld.clone().project(camera);
+      if (typeof window !== 'undefined') {
+        const win = window as unknown as { __krishnaScreenX?: number; __krishnaScreenY?: number };
+        win.__krishnaScreenX = screenPos.x; // [-1.0, 1.0]
+        win.__krishnaScreenY = screenPos.y; // [-1.0, 1.0]
+      }
+
+      // Point light tracks protagonist
       pointLight.position.set(charX, charY + 4, charZ + 2);
+
+      // Subtle atmospheric particles drift
+      const positions = particleGeo.attributes.position.array as Float32Array;
+      for (let i = 1; i < particleCount * 3; i += 3) {
+        positions[i] += Math.sin(time + positions[i + 1]) * 0.01;
+      }
+      particleGeo.attributes.position.needsUpdate = true;
 
       // Reactor ring rotation in Foundry
       ring1.rotation.z = time * 0.4;
