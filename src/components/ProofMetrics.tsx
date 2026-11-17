@@ -55,7 +55,7 @@ export default function ProofMetrics() {
             return (
               <div
                 key={idx}
-                className={`relative rounded-xl p-5 bg-white/[0.02] border border-white/[0.06] ${item.border} transition-all duration-300 group hover:-translate-y-1`}
+                className={`relative rounded-xl p-5 cursor-spotlight border border-white/[0.08] ${item.border} transition-all duration-300 group hover:-translate-y-1`}
               >
                 <div className="flex items-center space-x-3 mb-2">
                   <div className="p-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-slate-300 group-hover:text-white transition-colors">

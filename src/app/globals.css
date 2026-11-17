@@ -13,6 +13,9 @@
   --accent-coral: #ff3344;
   --accent-cyan: #38bdf8;
   --accent-amber: #f59e0b;
+  --mouse-x: 50vw;
+  --mouse-y: 50vh;
+  --scroll-velocity: 0px;
 }
 
 @theme inline {
@@ -85,6 +88,38 @@ body {
   pointer-events: none;
 }
 
+/* DYNAMIC CURSOR SPOTLIGHT ON CARDS AND BORDERS */
+/* This makes cards illuminate and come alive as the cursor moves or user scrolls past them! */
+.cursor-spotlight {
+  position: relative;
+  background-color: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cursor-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(239, 68, 68, 0.14),
+    transparent 80%
+  );
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cursor-spotlight:hover {
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow: 0 10px 35px -10px rgba(239, 68, 68, 0.2);
+  transform: translateY(-2px);
+}
+
 /* Glassmorphism utility classes */
 .glass-panel {
   background: rgba(10, 10, 15, 0.85);
@@ -107,31 +142,12 @@ body {
   transform: translateY(-2px);
 }
 
-/* Red Glow Orbs */
-.bg-glow-orb-red {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(140px);
-  background: radial-gradient(circle, rgba(239, 68, 68, 0.16) 0%, rgba(239, 68, 68, 0) 70%);
-  pointer-events: none;
-}
-
-/* Subtle Grid */
+/* Subtle Grid with Cursor Spotlight Wave */
 .bg-grid-subtle {
   background-size: 36px 36px;
   background-image: 
     linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-}
-
-/* Scanline animation */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(1000%); }
-}
-
-.animate-scanline {
-  animation: scanline 8s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

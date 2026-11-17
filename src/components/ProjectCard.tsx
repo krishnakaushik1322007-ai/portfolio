@@ -62,16 +62,16 @@ export default function ProjectCard({ project, featured = false }: ProjectCardPr
   return (
     <>
       <div
-        className={`relative rounded-2xl bg-[#0b0e14]/90 border transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1.5 ${
+        className={`relative rounded-2xl cursor-spotlight border transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1.5 ${
           project.isFlagship
-            ? 'border-sky-500/30 shadow-[0_10px_40px_-15px_rgba(56,189,248,0.15)] hover:border-sky-400'
-            : 'border-white/[0.08] hover:border-sky-500/30 shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
+            ? 'border-red-500/40 shadow-[0_10px_40px_-15px_rgba(239,68,68,0.2)] hover:border-red-500'
+            : 'border-white/[0.08] hover:border-red-500/40 shadow-[0_8px_30px_rgba(0,0,0,0.6)]'
         }`}
       >
-        {/* Subtle accent glow top border */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-sky-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        {/* Red accent glow top border */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
-        <div className="p-6 sm:p-8 space-y-6">
+        <div className="p-6 sm:p-8 space-y-6 relative z-10">
           
           {/* Top Metadata Row */}
           <div className="flex flex-wrap items-center justify-between gap-3">

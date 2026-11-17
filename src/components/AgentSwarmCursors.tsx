@@ -15,8 +15,10 @@ export interface SwarmAgent {
   angle: number;
   speed: number;
   actionTimer: number;
-  state: 'wandering' | 'inspecting' | 'clicking';
+  state: 'wandering' | 'escorting' | 'inspecting' | 'clicking';
   clickPulse: number;
+  orbitAngle: number;
+  orbitRadius: number;
 }
 
 const AGENT_COLORS = [
@@ -27,7 +29,6 @@ const AGENT_COLORS = [
   '#a855f7', // Violet
   '#ec4899', // Pink
   '#06b6d4', // Teal
-  '#6366f1', // Indigo
   '#f43f5e', // Rose
   '#84cc16'  // Lime
 ];
@@ -60,7 +61,6 @@ export default function AgentSwarmCursors({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Only on client and non-reduced-motion
     if (typeof window === 'undefined') return;
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
@@ -81,8 +81,40 @@ export default function AgentSwarmCursors({
     };
     window.addEventListener('resize', handleResize);
 
-    // Initialize 14 swarm agents
-    const agents: SwarmAgent[] = Array.from({ length: 14 }).map((_, i) => ({
+    let mouseX = width / 2;
+    let mouseY = height / 2;
+    let isUserActive = false;
+    let userActiveTimer = 0;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      isUserActive = true;
+      userActiveTimer = 60; // Stay in escort mode for 60 frames after move
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+
+    let lastScrollY = window.scrollY;
+    let scrollVelY = 0;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = currentScrollY - lastScrollY;
+      scrollVelY = delta * 0.45;
+      lastScrollY = currentScrollY;
+      isUserActive = true;
+      userActiveTimer = 80;
+
+      // When user scrolls, swarm agents scatter along the velocity vector, making the scroll feel kinetic!
+      agents.forEach((ag) => {
+        ag.vy -= scrollVelY * 0.35;
+        ag.vx += (Math.random() - 0.5) * Math.abs(scrollVelY) * 0.3;
+      });
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initialize 16 swarm agents
+    const agents: SwarmAgent[] = Array.from({ length: 16 }).map((_, i) => ({
       id: `agent-${i + 1}`,
       name: AGENT_NAMES[i % AGENT_NAMES.length],
       color: AGENT_COLORS[i % AGENT_COLORS.length],
@@ -95,34 +127,11 @@ export default function AgentSwarmCursors({
       angle: 0,
       speed: Math.random() * 0.8 + 0.6,
       actionTimer: Math.random() * 120 + 60,
-      state: 'wandering',
-      clickPulse: 0
+      state: i < 5 ? 'escorting' : 'wandering',
+      clickPulse: 0,
+      orbitAngle: (i / 16) * Math.PI * 2,
+      orbitRadius: 70 + (i % 4) * 35
     }));
-
-    let lastScrollY = window.scrollY;
-    let scrollVelY = 0;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY;
-      scrollVelY = delta * 0.35;
-      lastScrollY = currentScrollY;
-
-      // React to scroll velocity by scattering swarm agents along the flow
-      agents.forEach((ag) => {
-        ag.vy -= scrollVelY * 0.25;
-        ag.targetY -= scrollVelY * 0.6;
-      });
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    let mouseX = -1000;
-    let mouseY = -1000;
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     let animationId: number;
 
@@ -138,10 +147,10 @@ export default function AgentSwarmCursors({
       context.save();
       context.translate(x, y);
 
-      // Draw click ring ripple if pulsing
+      // Click ripple wave
       if (clickPulse > 0) {
         context.beginPath();
-        context.arc(0, 0, (1 - clickPulse) * 22, 0, Math.PI * 2);
+        context.arc(0, 0, (1 - clickPulse) * 26, 0, Math.PI * 2);
         context.strokeStyle = color;
         context.lineWidth = 1.5;
         context.globalAlpha = clickPulse;
@@ -151,7 +160,7 @@ export default function AgentSwarmCursors({
       // Rotate arrow
       context.rotate(angle);
 
-      // Draw Sharp Cursor Arrow Shape
+      // Sharp Cursor Arrow Shape
       context.beginPath();
       context.moveTo(0, 0);
       context.lineTo(14, 5);
@@ -176,11 +185,11 @@ export default function AgentSwarmCursors({
 
       context.restore();
 
-      // Draw subtle agent name label tag
+      // Subtle agent tag
       context.save();
       context.translate(x + 14, y + 14);
       context.font = '9px monospace';
-      context.fillStyle = 'rgba(5, 5, 8, 0.75)';
+      context.fillStyle = 'rgba(5, 5, 8, 0.8)';
       const textWidth = context.measureText(name).width;
       context.fillRect(-2, -8, textWidth + 6, 12);
       context.strokeStyle = color;
@@ -195,49 +204,56 @@ export default function AgentSwarmCursors({
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Damped scroll velocity
-      scrollVelY *= 0.9;
+      scrollVelY *= 0.92;
+      if (userActiveTimer > 0) userActiveTimer--;
+      else isUserActive = false;
 
       if (active) {
-        agents.forEach((ag) => {
-          // Timer state transitions
-          ag.actionTimer -= 1;
-          if (ag.actionTimer <= 0) {
-            // Pick a new interesting target on the page
-            ag.targetX = Math.random() * (width - 100) + 50;
-            ag.targetY = Math.random() * (height - 100) + 50;
-            ag.actionTimer = Math.random() * 180 + 90;
-            ag.state = Math.random() > 0.4 ? 'wandering' : 'clicking';
-            if (ag.state === 'clicking') {
-              ag.clickPulse = 1.0;
+        agents.forEach((ag, idx) => {
+          // If user is actively moving/scrolling, assign subset to escort user cursor
+          if (isUserActive && idx % 3 === 0) {
+            ag.state = 'escorting';
+            ag.orbitAngle += 0.03 * speedMultiplier;
+            ag.targetX = mouseX + Math.cos(ag.orbitAngle) * ag.orbitRadius;
+            ag.targetY = mouseY + Math.sin(ag.orbitAngle) * ag.orbitRadius;
+          } else {
+            ag.actionTimer -= 1;
+            if (ag.actionTimer <= 0) {
+              ag.targetX = Math.random() * (width - 120) + 60;
+              ag.targetY = Math.random() * (height - 120) + 60;
+              ag.actionTimer = Math.random() * 160 + 80;
+              ag.state = Math.random() > 0.4 ? 'wandering' : 'clicking';
+              if (ag.state === 'clicking') {
+                ag.clickPulse = 1.0;
+              }
             }
           }
 
           if (ag.clickPulse > 0) {
-            ag.clickPulse -= 0.04;
+            ag.clickPulse -= 0.035;
           }
 
-          // Seek target smoothly
+          // Seek target with physics force
           const dx = ag.targetX - ag.x;
           const dy = ag.targetY - ag.y;
           const dist = Math.hypot(dx, dy);
 
-          const maxSpd = ag.speed * speedMultiplier * (dist > 300 ? 2.5 : 1.2);
-          const force = 0.035 * speedMultiplier;
+          const maxSpd = ag.speed * speedMultiplier * (dist > 300 ? 3.0 : 1.4);
+          const force = (ag.state === 'escorting' ? 0.055 : 0.035) * speedMultiplier;
 
           if (dist > 5) {
             ag.vx += (dx / dist) * force;
             ag.vy += (dy / dist) * force;
           }
 
-          // Friction damping
-          ag.vx *= 0.94;
-          ag.vy *= 0.94;
+          // Inertial velocity damping
+          ag.vx *= 0.93;
+          ag.vy *= 0.93;
 
           ag.x += ag.vx;
           ag.y += ag.vy;
 
-          // Screen wrap bounds
+          // Screen bounds wrap
           if (ag.x < -30) ag.x = width + 20;
           if (ag.x > width + 30) ag.x = -20;
           if (ag.y < -30) ag.y = height + 20;
@@ -246,7 +262,7 @@ export default function AgentSwarmCursors({
           // Compute angle towards movement
           ag.angle = Math.atan2(ag.vy, ag.vx) + Math.PI / 4;
 
-          // Render agent cursor
+          // Draw agent cursor
           drawCursorArrow(
             ctx,
             ag.x,
@@ -266,8 +282,8 @@ export default function AgentSwarmCursors({
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(animationId);
     };
   }, [active, speedMultiplier]);
