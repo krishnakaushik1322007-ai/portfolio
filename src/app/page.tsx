@@ -3,6 +3,7 @@
 import React from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import LiveAgentPrototypeStudio from '@/components/LiveAgentPrototypeStudio';
 import ConstitutionalStack from '@/components/ConstitutionalStack';
 import FeaturedProjects from '@/components/FeaturedProjects';
 import ProofMetrics from '@/components/ProofMetrics';
@@ -30,6 +31,9 @@ export default function HomePage() {
         <main className="flex-1">
           {/* Cinematic Hero */}
           <Hero />
+
+          {/* BRAND NEW: Live Autonomous Agent Prototype Studio (Unique interactive prototype builder!) */}
+          <LiveAgentPrototypeStudio />
 
           {/* 7-Layer Autonomous Engineering Stack (From Video) */}
           <ConstitutionalStack />

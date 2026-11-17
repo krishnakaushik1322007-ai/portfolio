@@ -9,7 +9,8 @@ import {
   X, 
   Sparkles, 
   ArrowRight,
-  Terminal
+  Terminal,
+  Zap
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -26,8 +27,9 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
+    { name: 'Live Builder', href: '#live-builder', highlight: true },
     { name: 'About', href: pathname === '/' ? '#about' : '/#about' },
-    { name: 'Flagships', href: '/projects' },
+    { name: 'Flagships', href: pathname === '/' ? '#flagships' : '/projects' },
     { name: 'Matrix', href: pathname === '/' ? '#projects' : '/projects' },
     { name: 'Experience', href: pathname === '/' ? '#experience' : '/#experience' },
     { name: 'Education', href: pathname === '/' ? '#education' : '/#education' },
@@ -71,9 +73,14 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/[0.05] transition-colors"
+                className={`px-3 py-1.5 rounded-md text-xs font-mono uppercase tracking-wider transition-colors flex items-center space-x-1 ${
+                  link.highlight
+                    ? 'text-red-400 font-bold bg-red-500/10 border border-red-500/30 hover:bg-red-500 hover:text-white'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
+                }`}
               >
-                {link.name}
+                {link.highlight && <Zap className="w-3 h-3 text-red-500 animate-pulse" />}
+                <span>{link.name}</span>
               </Link>
             ))}
           </nav>
@@ -125,25 +132,29 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#07070b]/98 backdrop-blur-2xl border-b border-white/10 px-4 pt-3 pb-6 space-y-2">
+        <div className="md:hidden bg-[#08080d] border-b border-white/10 px-4 pt-3 pb-6 space-y-3 font-mono text-sm">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded text-sm font-mono text-slate-300 hover:text-white hover:bg-white/[0.05]"
+              className={`block px-3 py-2 rounded-lg ${
+                link.highlight
+                  ? 'text-red-400 font-bold bg-red-500/10 border border-red-500/30'
+                  : 'text-slate-300 hover:bg-white/5'
+              }`}
             >
               {link.name}
             </Link>
           ))}
-          <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between">
+          <div className="pt-3 border-t border-white/10 flex items-center justify-between">
             <a
               href="/Krishna_Kaushik_Resume.pdf"
               download
-              className="w-full flex items-center justify-center space-x-2 py-2.5 rounded bg-red-600 text-white font-mono font-bold text-xs uppercase tracking-wider"
+              className="text-xs text-red-400 flex items-center space-x-1.5"
             >
               <FileText className="w-4 h-4" />
-              <span>Download Official Resume</span>
+              <span>Download Resume (PDF)</span>
             </a>
           </div>
         </div>
