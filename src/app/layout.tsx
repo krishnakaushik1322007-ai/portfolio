@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import LivingCursorEngine from '@/components/LivingCursorEngine';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -84,7 +83,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} dark scroll-smooth`}
     >
       <body className="min-h-screen bg-[#050508] text-slate-100 antialiased selection:bg-red-500/25 selection:text-white">
-        <LivingCursorEngine />
         {children}
       </body>
     </html>

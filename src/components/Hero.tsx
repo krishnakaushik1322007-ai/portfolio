@@ -15,8 +15,6 @@ import {
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
 import NeuralCanvas from './NeuralCanvas';
-import BuilderWireframeBox from './BuilderWireframeBox';
-import TypewriterText from './TypewriterText';
 
 export default function Hero() {
   return (
@@ -33,14 +31,7 @@ export default function Hero() {
         className="absolute top-12 left-1/2 -translate-x-1/2 text-[14vw] sm:text-[16vw] font-black tracking-widest text-outline-hollow pointer-events-none select-none z-0 opacity-40 leading-none whitespace-nowrap"
         aria-hidden="true"
       >
-        <BuilderWireframeBox
-          dimensionText="1319 × 256"
-          startLayer={0}
-          endLayer={22}
-          showCrosshairs={false}
-        >
-          PORTFOLIO
-        </BuilderWireframeBox>
+        PORTFOLIO
       </div>
 
       {/* Subtle Grid Lines */}
@@ -53,80 +44,45 @@ export default function Hero() {
           <div className="lg:col-span-5 flex flex-col items-start space-y-5">
             
             {/* Script Text */}
-            <BuilderWireframeBox
-              dimensionText="140 × 36"
-              startLayer={4}
-              endLayer={18}
-            >
-              <div className="text-xl sm:text-2xl font-serif italic text-slate-300 font-light tracking-wide">
-                <TypewriterText text="Hello, I'm" startLayer={4} endLayer={18} />
-              </div>
-            </BuilderWireframeBox>
+            <div className="text-xl sm:text-2xl font-serif italic text-slate-300 font-light tracking-wide">
+              Hello, I&apos;m
+            </div>
 
             {/* High-Impact Solid Red Box with Name */}
-            <BuilderWireframeBox
-              dimensionText="280 × 68"
-              startLayer={10}
-              endLayer={32}
-              color="red"
-            >
-              <div className="inline-block px-5 py-2 sm:px-6 sm:py-2.5 bg-red-600 rounded-sm shadow-[0_0_35px_rgba(239,68,68,0.4)]">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-wider uppercase font-sans">
-                  <TypewriterText text="KRISHNA." startLayer={10} endLayer={32} cursorColor="white" />
-                </h1>
-              </div>
-            </BuilderWireframeBox>
+            <div className="inline-block px-5 py-2 sm:px-6 sm:py-2.5 bg-red-600 rounded-sm shadow-[0_0_35px_rgba(239,68,68,0.4)]">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-wider uppercase font-sans">
+                KRISHNA.
+              </h1>
+            </div>
 
             {/* Subtitle Pill */}
-            <BuilderWireframeBox
-              dimensionText="320 × 34"
-              startLayer={20}
-              endLayer={42}
-            >
-              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/[0.04] border border-red-500/30 text-[11px] font-mono text-red-400">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <TypewriterText text="AI ENGINEER & SYSTEMS ARCHITECT" startLayer={20} endLayer={42} cursorColor="red" />
-              </div>
-            </BuilderWireframeBox>
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/[0.04] border border-red-500/30 text-[11px] font-mono text-red-400">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span>AI ENGINEER &amp; SYSTEMS ARCHITECT</span>
+            </div>
 
             {/* Mission Statement */}
-            <BuilderWireframeBox
-              dimensionText="540 × 84"
-              startLayer={30}
-              endLayer={55}
-            >
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal max-w-lg min-h-[64px]">
-                <TypewriterText
-                  text="Architecting 24/7 intelligent reasoning systems, grounded multi-agent RAG pipelines, and deterministic software from first principles — zero hallucinations, verifiable execution."
-                  startLayer={30}
-                  endLayer={55}
-                />
-              </p>
-            </BuilderWireframeBox>
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal max-w-lg">
+              Architecting 24/7 intelligent reasoning systems, grounded multi-agent RAG pipelines, and deterministic software from first principles &mdash; zero hallucinations, verifiable execution.
+            </p>
 
             {/* Dual CTA Buttons (Matching video: Red INITIATE DISPATCH -> and Outline EXPLORE ARCHITECTURE) */}
-            <BuilderWireframeBox
-              dimensionText="360 × 48"
-              startLayer={45}
-              endLayer={62}
-            >
-              <div className="flex flex-wrap gap-3 pt-2 w-full sm:w-auto">
-                <a
-                  href="#contact"
-                  className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
-                >
-                  <span>INITIATE DISPATCH</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
+            <div className="flex flex-wrap gap-3 pt-2 w-full sm:w-auto">
+              <a
+                href="#contact"
+                className="inline-flex items-center space-x-2 px-6 py-3 bg-red-600 hover:bg-red-500 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-[0_0_20px_rgba(239,68,68,0.4)] hover:shadow-[0_0_30px_rgba(239,68,68,0.6)]"
+              >
+                <span>INITIATE DISPATCH</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </a>
 
-                <Link
-                  href="/projects"
-                  className="inline-flex items-center space-x-2 px-5 py-3 bg-black/60 hover:bg-white/[0.05] text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-semibold tracking-wider transition-all"
-                >
-                  <span>EXPLORE ARCHITECTURE</span>
-                </Link>
-              </div>
-            </BuilderWireframeBox>
+              <a
+                href="#live-builder"
+                className="inline-flex items-center space-x-2 px-5 py-3 bg-black/60 hover:bg-white/[0.05] text-slate-300 hover:text-white border border-white/10 text-xs font-mono font-semibold tracking-wider transition-all"
+              >
+                <span>WATCH LIVE BUILDER</span>
+              </a>
+            </div>
 
             {/* Stat Counters Row */}
             <div className="flex items-center space-x-6 pt-4 font-mono border-t border-white/[0.06] w-full">
@@ -150,53 +106,46 @@ export default function Hero() {
 
           {/* Center Column: Portrait / Neural Avatar Card (Matching video red box frame) */}
           <div className="lg:col-span-3 flex justify-center py-4">
-            <BuilderWireframeBox
-              dimensionText="240 × 300"
-              startLayer={15}
-              endLayer={50}
-              color="red"
-            >
-              <div className="relative group w-full max-w-[280px]">
+            <div className="relative group w-full max-w-[280px]">
+              
+              {/* Outer Red Ambient Halo */}
+              <div className="absolute -inset-1 bg-red-600/30 blur-xl rounded-xl opacity-75 group-hover:opacity-100 transition-opacity" />
+
+              {/* Main Red Frame */}
+              <div className="relative rounded-xl border-2 border-red-500 bg-[#08080d] p-3 shadow-2xl space-y-3">
                 
-                {/* Outer Red Ambient Halo */}
-                <div className="absolute -inset-1 bg-red-600/30 blur-xl rounded-xl opacity-75 group-hover:opacity-100 transition-opacity" />
-
-                {/* Main Red Frame */}
-                <div className="relative rounded-xl border-2 border-red-500 bg-[#08080d] p-3 shadow-2xl space-y-3">
+                {/* Visual Avatar / Photo Slot */}
+                <div className="relative aspect-[4/5] rounded-lg overflow-hidden bg-gradient-to-t from-red-950/40 via-slate-900 to-black border border-white/10 flex flex-col items-center justify-center p-4 text-center">
                   
-                  {/* Visual Avatar / Photo Slot */}
-                  <div className="relative aspect-[4/5] rounded-lg overflow-hidden bg-gradient-to-t from-red-950/40 via-slate-900 to-black border border-white/10 flex flex-col items-center justify-center p-4 text-center">
-                    
-                    {/* Procedural Stylized Monogram */}
-                    <div className="w-24 h-24 rounded-2xl bg-red-600/20 border border-red-500/50 flex items-center justify-center font-mono font-black text-4xl text-white shadow-[0_0_25px_rgba(239,68,68,0.3)]">
-                      KK
-                    </div>
-
-                    <div className="mt-4 space-y-0.5">
-                      <div className="text-sm font-bold text-white uppercase tracking-wider">Krishna Kaushik</div>
-                      <div className="text-[11px] font-mono text-red-400">CSE (Artificial Intelligence)</div>
-                      <div className="text-[10px] font-mono text-slate-400">Shoolini University &bull; India</div>
-                    </div>
-
-                    {/* Corner Target Markers */}
-                    <div className="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-red-500" />
-                    <div className="absolute top-2 right-2 w-2 h-2 border-t-2 border-r-2 border-red-500" />
-                    <div className="absolute bottom-2 left-2 w-2 h-2 border-b-2 border-l-2 border-red-500" />
-                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b-2 border-r-2 border-red-500" />
+                  {/* Procedural Stylized Monogram */}
+                  <div className="w-24 h-24 rounded-2xl bg-red-600/20 border border-red-500/50 flex items-center justify-center font-mono font-black text-4xl text-white shadow-[0_0_25px_rgba(239,68,68,0.3)]">
+                    KK
                   </div>
 
-                  {/* Status Bar */}
-                  <div className="px-2 py-1 rounded bg-black/60 border border-white/[0.08] text-center">
-                    <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest font-semibold flex items-center justify-center space-x-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                      <span>SOVEREIGN INTELLIGENCE ACTIVE</span>
-                    </span>
+                  <div className="mt-4 space-y-0.5">
+                    <div className="text-sm font-bold text-white uppercase tracking-wider">Krishna Kaushik</div>
+                    <div className="text-[11px] font-mono text-red-400">CSE (Artificial Intelligence)</div>
+                    <div className="text-[10px] font-mono text-slate-400">Shoolini University &bull; India</div>
                   </div>
 
+                  {/* Corner Target Markers */}
+                  <div className="absolute top-2 left-2 w-2 h-2 border-t-2 border-l-2 border-red-500" />
+                  <div className="absolute top-2 right-2 w-2 h-2 border-t-2 border-r-2 border-red-500" />
+                  <div className="absolute bottom-2 left-2 w-2 h-2 border-b-2 border-l-2 border-red-500" />
+                  <div className="absolute bottom-2 right-2 w-2 h-2 border-b-2 border-r-2 border-red-500" />
+                </div>
+
+                {/* Status Bar */}
+                <div className="px-2 py-1 rounded bg-black/60 border border-white/[0.08] text-center">
+                  <span className="text-[10px] font-mono text-red-400 uppercase tracking-widest font-semibold flex items-center justify-center space-x-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+                    <span>SOVEREIGN INTELLIGENCE ACTIVE</span>
+                  </span>
                 </div>
 
               </div>
-            </BuilderWireframeBox>
+
+            </div>
           </div>
 
           {/* Right Column: Featured Projects Numbered Feed (Matching video's right feed) */}
@@ -209,73 +158,55 @@ export default function Hero() {
             </div>
 
             {/* 01. CampusOS AI */}
-            <BuilderWireframeBox
-              dimensionText="340 × 74"
-              startLayer={25}
-              endLayer={48}
+            <Link
+              href="/projects/campusos-ai"
+              className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
             >
-              <Link
-                href="/projects/campusos-ai"
-                className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span className="text-red-400 font-bold">01.</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-300 border border-red-500/20">FLAGSHIP</span>
-                </div>
-                <h4 className="text-sm font-bold text-white group-hover:text-red-400 transition-colors">
-                  CampusOS AI
-                </h4>
-                <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
-                  Next.js &bull; FastAPI &bull; Supabase pgvector &bull; Gemini RAG
-                </p>
-              </Link>
-            </BuilderWireframeBox>
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span className="text-red-400 font-bold">01.</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-300 border border-red-500/20">FLAGSHIP</span>
+              </div>
+              <h4 className="text-sm font-bold text-white group-hover:text-red-400 transition-colors">
+                CampusOS AI
+              </h4>
+              <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
+                Next.js &bull; FastAPI &bull; Supabase pgvector &bull; Gemini RAG
+              </p>
+            </Link>
 
             {/* 02. CivicLens */}
-            <BuilderWireframeBox
-              dimensionText="340 × 74"
-              startLayer={38}
-              endLayer={58}
+            <Link
+              href="/projects/civiclens"
+              className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
             >
-              <Link
-                href="/projects/civiclens"
-                className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span className="text-red-400 font-bold">02.</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">100/100 TESTS</span>
-                </div>
-                <h4 className="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">
-                  CivicLens Municipal Platform
-                </h4>
-                <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
-                  PostGIS ST_DWithin &bull; Gemini 2.5 Flash Vision &bull; 6-Factor Scoring
-                </p>
-              </Link>
-            </BuilderWireframeBox>
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span className="text-red-400 font-bold">02.</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">100/100 TESTS</span>
+              </div>
+              <h4 className="text-sm font-bold text-white group-hover:text-sky-300 transition-colors">
+                CivicLens Municipal Platform
+              </h4>
+              <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
+                PostGIS ST_DWithin &bull; Gemini 2.5 Flash Vision &bull; 6-Factor Scoring
+              </p>
+            </Link>
 
             {/* 03. Gyanix */}
-            <BuilderWireframeBox
-              dimensionText="340 × 74"
-              startLayer={48}
-              endLayer={65}
+            <Link
+              href="/projects/gyanix"
+              className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
             >
-              <Link
-                href="/projects/gyanix"
-                className="p-3.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-red-500/40 block transition-all group"
-              >
-                <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
-                  <span className="text-red-400 font-bold">03.</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">PILOT</span>
-                </div>
-                <h4 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
-                  Gyanix Socratic Dataset
-                </h4>
-                <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
-                  CBSE 12 Physics &bull; 41 State Transitions &bull; 0 Schema Errors
-                </p>
-              </Link>
-            </BuilderWireframeBox>
+              <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                <span className="text-red-400 font-bold">03.</span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">PILOT</span>
+              </div>
+              <h4 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                Gyanix Socratic Dataset
+              </h4>
+              <p className="text-[11px] text-slate-400 leading-normal mt-0.5 font-sans">
+                CBSE 12 Physics &bull; 41 State Transitions &bull; 0 Schema Errors
+              </p>
+            </Link>
 
             {/* Quick Terminal & Resume Row */}
             <div className="pt-2 flex items-center justify-between text-xs">

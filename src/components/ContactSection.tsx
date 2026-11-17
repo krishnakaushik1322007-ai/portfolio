@@ -14,8 +14,6 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
-import BuilderWireframeBox from './BuilderWireframeBox';
-import TypewriterText from './TypewriterText';
 
 export default function ContactSection() {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -66,93 +64,64 @@ export default function ContactSection() {
             <span>DIRECT CONNECT</span>
           </div>
 
-          <BuilderWireframeBox
-            dimensionText="580 × 64"
-            startLayer={225}
-            endLayer={238}
-          >
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              Let&apos;s Architect Something <span className="text-red-500">Extraordinary</span>.
-            </h2>
-          </BuilderWireframeBox>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+            Let&apos;s Architect Something <span className="text-red-500">Extraordinary</span>.
+          </h2>
 
-          <BuilderWireframeBox
-            dimensionText="680 × 32"
-            startLayer={230}
-            endLayer={242}
-          >
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
-              <TypewriterText
-                text="Available for production autonomous AI system design, institutional engineering infrastructure, and full-stack software development roles worldwide."
-                startLayer={230}
-                endLayer={242}
-              />
-            </p>
-          </BuilderWireframeBox>
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+            Available for production autonomous AI system design, institutional engineering infrastructure, and full-stack software development roles worldwide.
+          </p>
 
           {/* High-Impact Solid Red Copy Email Button (Matching video center card) */}
-          <BuilderWireframeBox
-            dimensionText="480 × 52"
-            startLayer={235}
-            endLayer={246}
-            color="red"
-          >
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={`mailto:${emailAddress}`}
-                className="px-6 py-3.5 rounded-lg bg-black/60 border border-white/20 hover:border-red-500/50 text-white font-mono text-xs sm:text-sm font-semibold transition-colors"
-              >
-                <TypewriterText text={emailAddress} startLayer={235} endLayer={244} />
-              </a>
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={`mailto:${emailAddress}`}
+              className="px-6 py-3.5 rounded-lg bg-black/60 border border-white/20 hover:border-red-500/50 text-white font-mono text-xs sm:text-sm font-semibold transition-colors"
+            >
+              {emailAddress}
+            </a>
 
-              <button
-                onClick={() => copyToClipboard(emailAddress, 'email')}
-                className="px-6 py-3.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center space-x-2"
-              >
-                {copiedEmail ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                <span>{copiedEmail ? 'Copied to Clipboard!' : 'Copy Email Address'}</span>
-              </button>
-            </div>
-          </BuilderWireframeBox>
+            <button
+              onClick={() => copyToClipboard(emailAddress, 'email')}
+              className="px-6 py-3.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center space-x-2"
+            >
+              {copiedEmail ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedEmail ? 'Copied to Clipboard!' : 'Copy Email Address'}</span>
+            </button>
+          </div>
 
           {/* Social Profiles Chips */}
-          <BuilderWireframeBox
-            dimensionText="360 × 44"
-            startLayer={242}
-            endLayer={252}
-          >
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-3 text-xs font-mono">
-              <a
-                href="https://github.com/krishnakaushik1322007-ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 transition-colors"
-              >
-                <GithubIcon className="w-4 h-4 text-slate-400" />
-                <span>github.com/krishnakaushik1322007-ai</span>
-                <ArrowUpRight className="w-3 h-3 text-slate-500" />
-              </a>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-3 text-xs font-mono">
+            <a
+              href="https://github.com/krishnakaushik1322007-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 transition-colors"
+            >
+              <GithubIcon className="w-4 h-4 text-slate-400" />
+              <span>github.com/krishnakaushik1322007-ai</span>
+              <ArrowUpRight className="w-3 h-3 text-slate-500" />
+            </a>
 
-              <a
-                href="https://www.linkedin.com/in/krishna-kaushik-559239366/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-sky-300 border border-white/10 transition-colors"
-              >
-                <LinkedinIcon className="w-4 h-4 text-sky-400" />
-                <span>linkedin.com/in/krishna-kaushik-559239366</span>
-                <ArrowUpRight className="w-3 h-3 text-slate-500" />
-              </a>
+            <a
+              href="https://www.linkedin.com/in/krishna-kaushik-559239366/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-sky-300 border border-white/10 transition-colors"
+            >
+              <LinkedinIcon className="w-4 h-4 text-sky-400" />
+              <span>linkedin.com/in/krishna-kaushik-559239366</span>
+              <ArrowUpRight className="w-3 h-3 text-slate-500" />
+            </a>
 
-              <button
-                onClick={() => copyToClipboard(phoneNumber, 'phone')}
-                className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-300 border border-white/10 transition-colors"
-              >
-                <Phone className="w-4 h-4 text-emerald-400" />
-                <span>{copiedPhone ? 'Phone Copied!' : phoneNumber}</span>
-              </button>
-            </div>
-          </BuilderWireframeBox>
+            <button
+              onClick={() => copyToClipboard(phoneNumber, 'phone')}
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-300 border border-white/10 transition-colors"
+            >
+              <Phone className="w-4 h-4 text-emerald-400" />
+              <span>{copiedPhone ? 'Phone Copied!' : phoneNumber}</span>
+            </button>
+          </div>
         </div>
 
         {/* Detailed Form Container */}

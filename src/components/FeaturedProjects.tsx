@@ -11,8 +11,6 @@ import {
 } from 'lucide-react';
 import { projectsData } from '@/data/projects';
 import ProjectCard from './ProjectCard';
-import BuilderWireframeBox from './BuilderWireframeBox';
-import TypewriterText from './TypewriterText';
 
 export default function FeaturedProjects() {
   const [filter, setFilter] = useState<string>('all');
@@ -46,28 +44,12 @@ export default function FeaturedProjects() {
               <span className="w-2 h-2 rounded-full bg-red-500" />
               <span>ENGINEERING INDEX</span>
             </div>
-            <BuilderWireframeBox
-              dimensionText="440 × 56"
-              startLayer={175}
-              endLayer={190}
-            >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
-                The Systems <span className="text-red-500">Matrix</span>
-              </h2>
-            </BuilderWireframeBox>
-            <BuilderWireframeBox
-              dimensionText="620 × 28"
-              startLayer={180}
-              endLayer={195}
-            >
-              <p className="text-base text-slate-400 max-w-2xl leading-relaxed">
-                <TypewriterText
-                  text="Specialized architectures spanning grounded multi-agent RAG, multimodal vision triage, Socratic curriculum modeling, and native C++ expert systems."
-                  startLayer={180}
-                  endLayer={195}
-                />
-              </p>
-            </BuilderWireframeBox>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+              The Systems <span className="text-red-500">Matrix</span>
+            </h2>
+            <p className="text-base text-slate-400 max-w-2xl leading-relaxed">
+              Specialized architectures spanning grounded multi-agent RAG, multimodal vision triage, Socratic curriculum modeling, and native C++ expert systems.
+            </p>
           </div>
 
           <Link
@@ -80,40 +62,26 @@ export default function FeaturedProjects() {
         </div>
 
         {/* Filter Pills (Matching video: red active button) */}
-        <BuilderWireframeBox
-          dimensionText="380 × 38"
-          startLayer={185}
-          endLayer={198}
-          className="mb-8"
-        >
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
-            {categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => setFilter(c.id)}
-                className={`px-4 py-2 rounded-lg text-xs font-mono transition-all duration-200 whitespace-nowrap border ${
-                  filter === c.id
-                    ? 'bg-red-500 text-white font-bold border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)]'
-                    : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </BuilderWireframeBox>
+        <div className="flex items-center space-x-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setFilter(c.id)}
+              className={`px-4 py-2 rounded-lg text-xs font-mono transition-all duration-200 whitespace-nowrap border ${
+                filter === c.id
+                  ? 'bg-red-500 text-white font-bold border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)]'
+                  : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {filteredProjects.map((project, idx) => (
-            <BuilderWireframeBox
-              key={project.slug}
-              dimensionText="540 × 220"
-              startLayer={190 + idx * 7}
-              endLayer={200 + idx * 7}
-            >
-              <ProjectCard project={project} />
-            </BuilderWireframeBox>
+          {filteredProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
           ))}
         </div>
 
