@@ -720,15 +720,15 @@ export default function CinematicNarrativeOverlay() {
         {currentSceneIndex === 8 && (
           <div className="space-y-4 text-center pointer-events-auto">
             
-            {/* The Journey Has Just Begun */}
+            {/* The Destination Anime Title */}
             {pRel >= 0.02 && pRel < 0.35 && (
               <div className="animate-fadeIn space-y-2">
                 <span className="font-mono text-[10px] text-[#e5b061] tracking-[0.3em] uppercase block font-semibold">
-                  EPILOGUE // THE HORIZON
+                  EPILOGUE // 新たな地平 (THE HORIZON)
                 </span>
                 <h1 className="text-3xl sm:text-5xl font-serif font-light text-slate-100 tracking-tight leading-tight">
-                  &ldquo;The Journey Has <br />
-                  <span className="italic font-normal text-gradient-gold">Just Begun.&rdquo;</span>
+                  &ldquo;This is not the destination. <br />
+                  <span className="italic font-normal text-gradient-gold">It is just the beginning.&rdquo;</span>
                 </h1>
               </div>
             )}

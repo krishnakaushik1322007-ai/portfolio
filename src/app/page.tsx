@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MovieProvider, useMovie } from '@/context/MovieContext';
-import CinematicWorld3D from '@/components/movie/CinematicWorld3D';
+import AnimeCinemaWorld from '@/components/movie/AnimeCinemaWorld';
 import CinematicNarrativeOverlay from '@/components/movie/CinematicNarrativeOverlay';
 import MoviePlayerControls from '@/components/movie/MoviePlayerControls';
 import MovieProjectModal from '@/components/movie/MovieProjectModal';
@@ -18,8 +18,8 @@ function MovieExperience() {
       {/* Cinematic 2.39:1 Letterbox Scope & Audio Unlock */}
       <CinematicLetterbox />
 
-      {/* The 3D World Canvas (Camera tracking, Traveler Character, 7 Continuous World Zones) */}
-      <CinematicWorld3D />
+      {/* The 2D Anime Cinematic Engine (Handcrafted Anime Krishna, 2.5D Parallax, Particle Atmosphere) */}
+      <AnimeCinemaWorld />
 
       {/* Real-time Narrative Story Beats & Recruiter Fast-Access */}
       <CinematicNarrativeOverlay />
