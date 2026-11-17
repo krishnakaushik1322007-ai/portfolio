@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useMovie } from '@/context/MovieContext';
+import { KrishnaCharacterRig, KrishnaAnimationState } from './KrishnaCharacterRig';
 
 export default function CinematicWorld3D() {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -17,9 +18,9 @@ export default function CinematicWorld3D() {
     const container = containerRef.current;
     if (!container) return;
 
-    // 1. Scene, Camera, Renderer
+    // 1. Scene & Atmosphere Fog
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x060b18, 0.006);
+    scene.fog = new THREE.FogExp2(0x060b18, 0.0055);
 
     const camera = new THREE.PerspectiveCamera(
       52,
@@ -32,70 +33,42 @@ export default function CinematicWorld3D() {
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
 
-    // 2. Lighting System
-    const ambientLight = new THREE.AmbientLight(0x223355, 1.2);
+    // 2. Dynamic Lighting System
+    const ambientLight = new THREE.AmbientLight(0x2a3b5c, 1.4);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffddaa, 2.5);
-    sunLight.position.set(20, 60, -50);
+    const sunLight = new THREE.DirectionalLight(0xffdfba, 2.8);
+    sunLight.position.set(30, 80, -60);
     sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 2048;
+    sunLight.shadow.mapSize.height = 2048;
     scene.add(sunLight);
 
-    const pointLight = new THREE.PointLight(0x38bdf8, 3, 150);
+    const pointLight = new THREE.PointLight(0x38bdf8, 3.5, 120);
     scene.add(pointLight);
 
-    // 3. The Protagonist Traveler (Stylized Faceless Adventurer Silhouette)
-    const travelerGroup = new THREE.Group();
-    
-    // Head / Hood
-    const headGeo = new THREE.SphereGeometry(0.35, 16, 16);
-    const headMat = new THREE.MeshStandardMaterial({ color: 0x111625, roughness: 0.8 });
-    const head = new THREE.Mesh(headGeo, headMat);
-    head.position.y = 1.8;
-    travelerGroup.add(head);
+    const textureLoader = new THREE.TextureLoader();
 
-    // Body / Trench Coat
-    const coatGeo = new THREE.CylinderGeometry(0.25, 0.55, 1.3, 16);
-    const coatMat = new THREE.MeshStandardMaterial({ color: 0x0a0f1d, roughness: 0.6 });
-    const coat = new THREE.Mesh(coatGeo, coatMat);
-    coat.position.y = 1.0;
-    coat.castShadow = true;
-    travelerGroup.add(coat);
+    // 3. Krishna Kaushik Character Rig (Human Protagonist)
+    const krishna = new KrishnaCharacterRig();
+    scene.add(krishna.group);
 
-    // Golden Scarf / Collar accent
-    const scarfGeo = new THREE.TorusGeometry(0.3, 0.08, 8, 16);
-    const scarfMat = new THREE.MeshStandardMaterial({ color: 0xe5b061, emissive: 0xe5b061, emissiveIntensity: 0.4 });
-    const scarf = new THREE.Mesh(scarfGeo, scarfMat);
-    scarf.rotation.x = Math.PI / 2;
-    scarf.position.y = 1.6;
-    travelerGroup.add(scarf);
-
-    // Legs
-    const legGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.9, 8);
-    const legMat = new THREE.MeshStandardMaterial({ color: 0x050811, roughness: 0.9 });
-    const leftLeg = new THREE.Mesh(legGeo, legMat);
-    leftLeg.position.set(-0.16, 0.45, 0);
-    const rightLeg = new THREE.Mesh(legGeo, legMat);
-    rightLeg.position.set(0.16, 0.45, 0);
-    travelerGroup.add(leftLeg);
-    travelerGroup.add(rightLeg);
-
-    scene.add(travelerGroup);
-
-    // 4. ZONE 01: Mountain Road at Dawn (Z: 0 to 90)
+    // =========================================================================
+    // ZONE 01: Mountain Road at Dawn (Z: 0 to 95)
+    // =========================================================================
     const roadCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(4, 0, 30),
-      new THREE.Vector3(-3, 0, 60),
-      new THREE.Vector3(0, 0, 90)
+      new THREE.Vector3(0, 0, -10),
+      new THREE.Vector3(3, 0, 25),
+      new THREE.Vector3(-2, 0, 60),
+      new THREE.Vector3(0, 0, 95)
     ]);
-    const roadGeo = new THREE.TubeGeometry(roadCurve, 64, 2.5, 8, false);
-    const roadMat = new THREE.MeshStandardMaterial({ color: 0x161c28, roughness: 0.9 });
+    const roadGeo = new THREE.TubeGeometry(roadCurve, 64, 2.8, 8, false);
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x141824, roughness: 0.9 });
     const roadMesh = new THREE.Mesh(roadGeo, roadMat);
     roadMesh.position.y = -0.1;
     scene.add(roadMesh);
@@ -108,62 +81,116 @@ export default function CinematicWorld3D() {
     scene.add(stripeMesh);
 
     // Mountain silhouettes
-    const mountainGeo = new THREE.ConeGeometry(25, 45, 5);
-    const mountainMat = new THREE.MeshStandardMaterial({ color: 0x0a1020, flatShading: true });
-    for (let i = 0; i < 18; i++) {
+    const mountainGeo = new THREE.ConeGeometry(28, 55, 5);
+    const mountainMat = new THREE.MeshStandardMaterial({ color: 0x090f1d, flatShading: true });
+    for (let i = 0; i < 20; i++) {
       const mt = new THREE.Mesh(mountainGeo, mountainMat);
       const side = i % 2 === 0 ? 1 : -1;
-      mt.position.set(side * (30 + Math.random() * 25), 10, i * 6);
+      mt.position.set(side * (32 + Math.random() * 30), 12, i * 5);
       mt.rotation.y = Math.random() * Math.PI;
-      mt.scale.set(0.8 + Math.random() * 0.8, 0.7 + Math.random() * 0.6, 0.8 + Math.random() * 0.8);
+      mt.scale.set(0.8 + Math.random() * 0.9, 0.7 + Math.random() * 0.7, 0.8 + Math.random() * 0.9);
       scene.add(mt);
     }
 
-    // 5. ZONE 02: The Foundation - Shoolini University Quad (Z: 90 to 190)
+    // Zone 1 Cinematic Backdrop Plate
+    textureLoader.load('/movie/scene1_mountain_road.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 18, 50);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // ZONE 02: Shoolini University Quad & Classroom (Z: 95 to 195)
+    // =========================================================================
     const quadPavementGeo = new THREE.PlaneGeometry(36, 100);
-    const quadPavementMat = new THREE.MeshStandardMaterial({ color: 0x141824, roughness: 0.8 });
+    const quadPavementMat = new THREE.MeshStandardMaterial({ color: 0x121722, roughness: 0.8 });
     const quadPavement = new THREE.Mesh(quadPavementGeo, quadPavementMat);
     quadPavement.rotation.x = -Math.PI / 2;
-    quadPavement.position.set(0, -0.05, 140);
+    quadPavement.position.set(0, -0.05, 145);
     scene.add(quadPavement);
 
-    // Collegiate Colonnade Columns
-    const colGeo = new THREE.CylinderGeometry(0.7, 0.7, 14, 16);
-    const colMat = new THREE.MeshStandardMaterial({ color: 0x222a3d, roughness: 0.6 });
-    for (let z = 100; z <= 180; z += 16) {
+    // Collegiate Colonnade Columns & Archways
+    const colGeo = new THREE.CylinderGeometry(0.65, 0.65, 15, 16);
+    const colMat = new THREE.MeshStandardMaterial({ color: 0x1e2738, roughness: 0.6 });
+    for (let z = 105; z <= 185; z += 16) {
       const colL = new THREE.Mesh(colGeo, colMat);
-      colL.position.set(-14, 7, z);
+      colL.position.set(-13, 7.5, z);
       scene.add(colL);
 
       const colR = new THREE.Mesh(colGeo, colMat);
-      colR.position.set(14, 7, z);
+      colR.position.set(13, 7.5, z);
       scene.add(colR);
 
-      // Connecting arch lintels
-      const lintelGeo = new THREE.BoxGeometry(30, 1.2, 2);
+      const lintelGeo = new THREE.BoxGeometry(28, 1.2, 1.8);
       const lintel = new THREE.Mesh(lintelGeo, colMat);
-      lintel.position.set(0, 14, z);
+      lintel.position.set(0, 15, z);
       scene.add(lintel);
     }
 
-    // 6. ZONE 03: The Awakening - Cybernetic Lab (Z: 190 to 290)
-    const labFloorGeo = new THREE.PlaneGeometry(40, 100);
-    const labFloorMat = new THREE.MeshStandardMaterial({ 
-      color: 0x050c18, 
-      roughness: 0.2, 
-      metalness: 0.8 
+    // Classroom Lecture Desk & Study Chair at Z = 145
+    const deskGroup = new THREE.Group();
+    deskGroup.position.set(0, 0, 145);
+    
+    // Wooden Desk
+    const deskWoodMat = new THREE.MeshStandardMaterial({ color: 0x3d271d, roughness: 0.7 });
+    const deskTop = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.08, 1.2), deskWoodMat);
+    deskTop.position.set(0, 0.75, 0);
+    deskGroup.add(deskTop);
+    
+    // Metal legs
+    const deskLegMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.8, roughness: 0.3 });
+    const dl1 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.75, 8), deskLegMat);
+    dl1.position.set(-1.1, 0.375, -0.5);
+    const dl2 = dl1.clone(); dl2.position.set(1.1, 0.375, -0.5);
+    const dl3 = dl1.clone(); dl3.position.set(-1.1, 0.375, 0.5);
+    const dl4 = dl1.clone(); dl4.position.set(1.1, 0.375, 0.5);
+    deskGroup.add(dl1, dl2, dl3, dl4);
+
+    // Open Study Notebook & Pen on desk
+    const notebook = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.02, 0.45), new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.9 }));
+    notebook.position.set(0, 0.8, 0);
+    notebook.rotation.y = 0.15;
+    deskGroup.add(notebook);
+
+    // Chair
+    const chairGroup = new THREE.Group();
+    const chairSeat = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.06, 0.55), deskWoodMat);
+    chairSeat.position.set(0, 0.48, -0.55);
+    const chairBack = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.5, 0.05), deskWoodMat);
+    chairBack.position.set(0, 0.75, -0.8);
+    chairGroup.add(chairSeat, chairBack);
+    deskGroup.add(chairGroup);
+    scene.add(deskGroup);
+
+    // Zone 2 Cinematic Backdrop Plate
+    textureLoader.load('/movie/scene2_university.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 18, 170);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
     });
+
+    // =========================================================================
+    // ZONE 03: Cybernetic R&D Computer Lab (Z: 195 to 295)
+    // =========================================================================
+    const labFloorGeo = new THREE.PlaneGeometry(38, 100);
+    const labFloorMat = new THREE.MeshStandardMaterial({ color: 0x070e1b, roughness: 0.25, metalness: 0.8 });
     const labFloor = new THREE.Mesh(labFloorGeo, labFloorMat);
     labFloor.rotation.x = -Math.PI / 2;
-    labFloor.position.set(0, -0.05, 240);
+    labFloor.position.set(0, -0.05, 245);
     scene.add(labFloor);
 
-    // Glowing server towers
+    // Glowing server racks
     const serverGeo = new THREE.BoxGeometry(2, 9, 2);
-    const serverMat = new THREE.MeshStandardMaterial({ color: 0x0d1629, roughness: 0.4 });
+    const serverMat = new THREE.MeshStandardMaterial({ color: 0x0c1322, roughness: 0.4 });
     const serverLedMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x38bdf8, emissiveIntensity: 1.5 });
     
-    for (let z = 200; z <= 280; z += 12) {
+    for (let z = 205; z <= 285; z += 12) {
       const sL = new THREE.Mesh(serverGeo, serverMat);
       sL.position.set(-11, 4.5, z);
       scene.add(sL);
@@ -181,10 +208,40 @@ export default function CinematicWorld3D() {
       scene.add(ledR);
     }
 
-    // 7. ZONE 04: The Creation - Massive Foundry & 6 Project Portals (Z: 290 to 440)
-    const foundryCenterZ = 365;
+    // Workstation Desk at Z = 245 with glowing ultrawide monitors
+    const labWorkstation = new THREE.Group();
+    labWorkstation.position.set(0, 0, 245);
+    const labDeskTop = new THREE.Mesh(new THREE.BoxGeometry(3, 0.08, 1.4), new THREE.MeshStandardMaterial({ color: 0x0a101d, metalness: 0.9, roughness: 0.3 }));
+    labDeskTop.position.set(0, 0.75, 0);
+    labWorkstation.add(labDeskTop);
 
-    // Central illuminated reactor sphere
+    // Dual Glowing Monitors
+    const monMat = new THREE.MeshStandardMaterial({ color: 0x38bdf8, emissive: 0x38bdf8, emissiveIntensity: 1.2 });
+    const screen1 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.65, 0.04), monMat);
+    screen1.position.set(-0.65, 1.25, 0.4);
+    screen1.rotation.y = 0.15;
+    const screen2 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.65, 0.04), monMat);
+    screen2.position.set(0.65, 1.25, 0.4);
+    screen2.rotation.y = -0.15;
+    labWorkstation.add(screen1, screen2);
+    scene.add(labWorkstation);
+
+    // Zone 3 Cinematic Backdrop Plate
+    textureLoader.load('/movie/scene3_computer_lab.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 18, 270);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // ZONE 04: The Creation & 6 Project Portals (Z: 295 to 445)
+    // =========================================================================
+    const foundryCenterZ = 370;
+
+    // Central illuminated reactor core
     const reactorCoreGeo = new THREE.SphereGeometry(6, 32, 32);
     const reactorCoreMat = new THREE.MeshStandardMaterial({
       color: 0x38bdf8,
@@ -211,12 +268,12 @@ export default function CinematicWorld3D() {
     // 6 Interactive Project Monolith Portals around the central foundry
     const projectPortals: { mesh: THREE.Mesh; slug: string; title: string }[] = [];
     const projectList = [
-      { slug: 'campusos-ai', title: 'CampusOS AI (Flagship)', color: 0xe5b061, x: -14, z: 330 },
-      { slug: 'gyanix', title: 'Gyanix (Socratic AI)', color: 0x38bdf8, x: 14, z: 330 },
-      { slug: 'civiclens', title: 'CivicLens (Spatial AI)', color: 0x10b981, x: -16, z: 370 },
-      { slug: 'agentic-rag-engine', title: 'Agentic RAG Engine', color: 0x06b6d4, x: 16, z: 370 },
-      { slug: 'zeneth-crop-expert', title: 'ZENETH (Native C++)', color: 0xf43f5e, x: -13, z: 410 },
-      { slug: 'financial-advisor-ai', title: 'Financial Advisor AI', color: 0xf59e0b, x: 13, z: 410 }
+      { slug: 'campusos-ai', title: 'CampusOS AI (Flagship)', color: 0xe5b061, x: -14, z: 335 },
+      { slug: 'gyanix', title: 'Gyanix (Socratic AI)', color: 0x38bdf8, x: 14, z: 335 },
+      { slug: 'civiclens', title: 'CivicLens (Spatial AI)', color: 0x10b981, x: -16, z: 375 },
+      { slug: 'agentic-rag-engine', title: 'Agentic RAG Engine', color: 0x06b6d4, x: 16, z: 375 },
+      { slug: 'zeneth-crop-expert', title: 'ZENETH (Native C++)', color: 0xf43f5e, x: -13, z: 415 },
+      { slug: 'financial-advisor-ai', title: 'Financial Advisor AI', color: 0xf59e0b, x: 13, z: 415 }
     ];
 
     projectList.forEach((p) => {
@@ -233,7 +290,6 @@ export default function CinematicWorld3D() {
       portalMesh.castShadow = true;
       scene.add(portalMesh);
 
-      // Glowing outer rim
       const rimGeo = new THREE.BoxGeometry(4.7, 7.7, 0.85);
       const rimMat = new THREE.MeshStandardMaterial({ color: p.color, emissive: p.color, emissiveIntensity: 0.8, wireframe: true });
       const rim = new THREE.Mesh(rimGeo, rimMat);
@@ -242,9 +298,21 @@ export default function CinematicWorld3D() {
       projectPortals.push({ mesh: portalMesh, slug: p.slug, title: p.title });
     });
 
-    // 8. ZONE 05: Professional Journey - Corizo/IIT Bombay Facility (Z: 440 to 540)
+    // Zone 4 Cinematic Backdrop Plate (CampusOS Engineering)
+    textureLoader.load('/movie/scene4_campusos.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 18, 410);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // ZONE 05: Professional Journey - Corizo/IIT Bombay Robotics & IoT (Z: 445 to 545)
+    // =========================================================================
     for (let k = 0; k < 3; k++) {
-      const moduleZ = 460 + k * 30;
+      const moduleZ = 465 + k * 30;
       const podGeo = new THREE.CylinderGeometry(7, 7, 8, 16, 1, true);
       const podMat = new THREE.MeshStandardMaterial({ 
         color: k === 0 ? 0x10b981 : 0x1e293b, 
@@ -257,50 +325,115 @@ export default function CinematicWorld3D() {
       scene.add(pod);
     }
 
-    // 9. ZONE 06: The Milestones - Mountain Summit (Z: 540 to 630)
-    const summitGeo = new THREE.ConeGeometry(40, 25, 8);
-    const summitMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, flatShading: true });
+    // Articulated Robotic Arm & IoT Circuit Workbench at Z = 495
+    const roboticsBench = new THREE.Group();
+    roboticsBench.position.set(0, 0, 495);
+    const benchTop = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.1, 1.4), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.7 }));
+    benchTop.position.set(0, 0.8, 0);
+    roboticsBench.add(benchTop);
+
+    // Robotic arm base & joints
+    const armBase = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.35, 0.2, 16), new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.9 }));
+    armBase.position.set(0.6, 0.95, 0);
+    const armSegment1 = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.8, 8), new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.6 }));
+    armSegment1.position.set(0.6, 1.45, 0.1);
+    armSegment1.rotation.x = 0.4;
+    const armSegment2 = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.7, 8), new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.6 }));
+    armSegment2.position.set(0.6, 1.9, -0.15);
+    armSegment2.rotation.x = -0.5;
+    roboticsBench.add(armBase, armSegment1, armSegment2);
+
+    // Glowing green IoT microcontroller board
+    const iotBoard = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.02, 0.5), new THREE.MeshStandardMaterial({ color: 0x10b981, emissive: 0x10b981, emissiveIntensity: 0.9 }));
+    iotBoard.position.set(-0.5, 0.86, 0);
+    roboticsBench.add(iotBoard);
+    scene.add(roboticsBench);
+
+    // Zone 5 Cinematic Backdrop Plate (Robotics & IoT Lab)
+    textureLoader.load('/movie/scene5_robotics.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 18, 520);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // ZONE 06: Mountain Summit & Anveshan Hackathon (Z: 545 to 635)
+    // =========================================================================
+    const summitGeo = new THREE.ConeGeometry(40, 26, 8);
+    const summitMat = new THREE.MeshStandardMaterial({ color: 0x0d1424, flatShading: true });
     const summit = new THREE.Mesh(summitGeo, summitMat);
-    summit.position.set(0, 0, 590);
+    summit.position.set(0, 0, 595);
     scene.add(summit);
 
-    // Glowing Achievement Monolith
+    // Glowing Achievement Monolith (Anveshan Round 2 Milestone)
     const monolithGeo = new THREE.BoxGeometry(3, 8, 1.2);
     const monolithMat = new THREE.MeshStandardMaterial({ 
       color: 0x8b5cf6, 
       emissive: 0x8b5cf6, 
-      emissiveIntensity: 0.7 
+      emissiveIntensity: 0.8 
     });
     const monolith = new THREE.Mesh(monolithGeo, monolithMat);
-    monolith.position.set(0, 16, 590);
+    monolith.position.set(0, 16.5, 595);
     scene.add(monolith);
 
-    // 10. ZONE 07: The Destination - Futuristic Metropolis Skyline (Z: 630 to 720)
-    // Tower skyscrapers on horizon
-    for (let t = 0; t < 28; t++) {
-      const h = 25 + Math.random() * 50;
+    // Zone 6 Cinematic Backdrop Plate (Mountain Summit at Dawn)
+    textureLoader.load('/movie/scene6_summit.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(80, 45);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 24, 615);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // ZONE 07: The Destination - Futuristic Skyline at Sunrise (Z: 635 to 730)
+    // =========================================================================
+    for (let t = 0; t < 30; t++) {
+      const h = 28 + Math.random() * 55;
       const towerGeo = new THREE.BoxGeometry(6 + Math.random() * 8, h, 6 + Math.random() * 8);
       const towerMat = new THREE.MeshStandardMaterial({ 
-        color: 0x091428, 
+        color: 0x081122, 
         emissive: 0x38bdf8, 
         emissiveIntensity: 0.15 + Math.random() * 0.25,
         roughness: 0.3
       });
       const tower = new THREE.Mesh(towerGeo, towerMat);
-      const tx = (Math.random() - 0.5) * 110;
-      const tz = 680 + Math.random() * 70;
+      const tx = (Math.random() - 0.5) * 120;
+      const tz = 690 + Math.random() * 80;
       tower.position.set(tx, h / 2, tz);
       scene.add(tower);
     }
 
     // Rooftop Observation Deck
-    const deckGeo = new THREE.BoxGeometry(22, 2, 28);
-    const deckMat = new THREE.MeshStandardMaterial({ color: 0x141f33, roughness: 0.5 });
+    const deckGeo = new THREE.BoxGeometry(24, 2, 30);
+    const deckMat = new THREE.MeshStandardMaterial({ color: 0x121a2c, roughness: 0.5 });
     const deck = new THREE.Mesh(deckGeo, deckMat);
-    deck.position.set(0, 8, 665);
+    deck.position.set(0, 8.5, 670);
     scene.add(deck);
 
-    // 11. Raycaster for clicking project portals in 3D
+    // Glass safety railing on terrace
+    const railMat = new THREE.MeshPhysicalMaterial({ color: 0x93c5fd, transmission: 0.8, transparent: true, opacity: 0.5, roughness: 0.1 });
+    const railFront = new THREE.Mesh(new THREE.BoxGeometry(24, 1.2, 0.1), railMat);
+    railFront.position.set(0, 10.1, 684.8);
+    scene.add(railFront);
+
+    // Zone 7 Cinematic Backdrop Plate (Metropolis Rooftop Sunrise)
+    textureLoader.load('/movie/scene7_city_sunrise.jpg', (tex) => {
+      const plateGeo = new THREE.PlaneGeometry(90, 50);
+      const plateMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0.35, depthWrite: false });
+      const plate = new THREE.Mesh(plateGeo, plateMat);
+      plate.position.set(0, 24, 715);
+      plate.rotation.y = Math.PI;
+      scene.add(plate);
+    });
+
+    // =========================================================================
+    // Pointer Interactivity (Clicking Project Portals & Achievement Monolith)
+    // =========================================================================
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -319,7 +452,6 @@ export default function CinematicWorld3D() {
         }
       }
 
-      // Check monolith click for Certificate in Scene 06
       const monoIntersects = raycaster.intersectObject(monolith);
       if (monoIntersects.length > 0) {
         setIsCertificateModalOpen(true);
@@ -328,50 +460,160 @@ export default function CinematicWorld3D() {
 
     renderer.domElement.addEventListener('pointerdown', handlePointerDown);
 
-    // 12. Main Animation & Render Loop
+    // =========================================================================
+    // Main Cinema Loop & Character Skeletal Animation
+    // =========================================================================
     let animId: number;
     let clock = new THREE.Clock();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
       const time = clock.getElapsedTime();
       const p = progressRef.current; // 0.0 to 1.0
 
-      // Map progress to world Z position along spline (0 to 690)
+      // Map progress to world coordinate Z (0 to 680)
       const currentZ = p * 680;
 
-      // Traveler walk animation & positioning
-      const walkSpeed = 8;
-      const legAngle = Math.sin(time * walkSpeed) * 0.45;
-      leftLeg.rotation.x = legAngle;
-      rightLeg.rotation.x = -legAngle;
-      coat.position.y = 1.0 + Math.abs(Math.sin(time * walkSpeed)) * 0.06;
+      // Determine Krishna's action, posture, and position depending on zone
+      let animState: KrishnaAnimationState = {
+        action: 'walk',
+        headTurn: 0,
+        armReach: 0,
+        lookUp: 0
+      };
 
-      // Traveler leads camera by 16 units forward
-      const charZ = Math.min(672, currentZ + 15);
-      const charX = Math.sin(charZ * 0.04) * 2.5;
-      const charY = (currentZ > 530 && currentZ < 630) ? (currentZ - 530) * 0.15 : (currentZ >= 630 ? 9.5 : 0);
+      let charX = 0;
+      let charY = 0;
+      let charZ = 0;
+      let charRotY = 0;
 
-      travelerGroup.position.set(charX, charY, charZ);
-      travelerGroup.rotation.y = Math.cos(charZ * 0.04) * 0.2;
+      if (p < 0.14) {
+        // ZONE 01: Lonely Mountain Road at Sunrise
+        // Krishna walks on the road facing the horizon, stops to gaze
+        animState.action = 'walk';
+        charZ = currentZ + 12;
+        charX = Math.sin(charZ * 0.04) * 2.2;
+        charY = 0;
+        charRotY = 0;
+        animState.headTurn = Math.sin(time * 0.8) * 0.25; // glancing at mountains
+      } 
+      else if (p >= 0.14 && p < 0.28) {
+        // ZONE 02: Shoolini University Quad & Classroom
+        if (p < 0.21) {
+          // Walking through colonnade archway
+          animState.action = 'walk';
+          charZ = currentZ + 10;
+          charX = 0;
+          charY = 0;
+          charRotY = 0;
+        } else {
+          // Seated at study desk with notebook
+          animState.action = 'sit_study';
+          charZ = 145 - 0.45;
+          charX = 0;
+          charY = 0;
+          charRotY = Math.PI; // facing desk and forward
+          animState.lookUp = -0.25; // looking down at study notes
+        }
+      } 
+      else if (p >= 0.28 && p < 0.42) {
+        // ZONE 03: Cybernetic R&D Computer Lab
+        if (p < 0.35) {
+          // Walking into lab
+          animState.action = 'walk';
+          charZ = currentZ + 10;
+          charX = 0;
+          charY = 0;
+          charRotY = 0;
+        } else {
+          // Seated at dual-monitor workstation typing code
+          animState.action = 'type_code';
+          charZ = 245 - 0.45;
+          charX = 0;
+          charY = 0;
+          charRotY = Math.PI;
+          animState.headTurn = Math.sin(time * 1.5) * 0.2; // glancing between dual monitors
+        }
+      } 
+      else if (p >= 0.42 && p < 0.65) {
+        // ZONE 04: The Creation & 6 Project Portals
+        if (p < 0.52) {
+          // Working at CampusOS multi-monitor foundry
+          animState.action = 'work_campusos';
+          charZ = 335;
+          charX = -5;
+          charY = 0;
+          charRotY = 0.5;
+        } else {
+          // Inspecting project portals with arm gesture
+          animState.action = 'inspect_projects';
+          charZ = currentZ + 8;
+          charX = Math.sin(charZ * 0.05) * 6;
+          charY = 0;
+          charRotY = -0.4;
+          animState.armReach = 0.8;
+        }
+      } 
+      else if (p >= 0.65 && p < 0.78) {
+        // ZONE 05: Corizo / IIT Bombay Robotics & IoT Lab
+        animState.action = 'inspect_robotics';
+        charZ = 495 - 0.7;
+        charX = -0.5;
+        charY = 0;
+        charRotY = 0.3;
+        animState.armReach = 0.9;
+        animState.lookUp = -0.15;
+      } 
+      else if (p >= 0.78 && p < 0.88) {
+        // ZONE 06: Mountain Summit at Dawn (Anveshan Milestone)
+        animState.action = 'summit_view';
+        charZ = 595 - 2;
+        charX = 0;
+        charY = 13.5; // On the mountain peak
+        charRotY = 0;
+        animState.lookUp = 0.15; // Gazing upward at achievement monolith
+      } 
+      else {
+        // ZONE 07: Futuristic Metropolis Skyline at Sunrise
+        animState.action = 'future_look';
+        charZ = 675;
+        charX = 0;
+        charY = 9.5; // Rooftop deck elevation
+        charRotY = 0; // Looking out over skyline
+        animState.lookUp = 0.1;
+      }
 
-      // Camera Dolly & Follow Kinematics
-      const camTargetZ = currentZ;
-      const camTargetX = Math.sin(currentZ * 0.035) * 4.5;
-      const camTargetY = (currentZ > 530 && currentZ < 630) 
-        ? 6 + (currentZ - 530) * 0.18 
-        : (currentZ >= 630 ? 12 : 3.8);
+      // Smoothly update Krishna Character Rig position & bones
+      krishna.group.position.set(charX, charY, charZ);
+      krishna.group.rotation.y = charRotY;
+      krishna.update(time, animState);
+
+      // Camera Kinematics (Follow dolly, orbit, framing)
+      let camTargetZ = currentZ;
+      let camTargetX = Math.sin(currentZ * 0.035) * 4.2;
+      let camTargetY = 3.6;
+
+      if (p >= 0.78 && p < 0.88) {
+        // Summit elevation
+        camTargetY = 16.5;
+        camTargetZ = 582;
+        camTargetX = Math.sin(time * 0.3) * 6;
+      } else if (p >= 0.88) {
+        // Rooftop observation elevation
+        camTargetY = 11.5;
+        camTargetZ = 660;
+        camTargetX = Math.sin(time * 0.25) * 4;
+      }
 
       camera.position.x += (camTargetX - camera.position.x) * 0.08;
       camera.position.y += (camTargetY - camera.position.y) * 0.08;
       camera.position.z += (camTargetZ - camera.position.z) * 0.1;
 
-      // Dynamic lookAt point (focusing on traveler and horizon ahead)
-      const lookAtTarget = new THREE.Vector3(charX * 0.5, charY + 1.6, charZ + 12);
+      // Camera looks directly at Krishna with slight forward offset
+      const lookAtTarget = new THREE.Vector3(charX * 0.5, charY + 1.6, charZ + 8);
       camera.lookAt(lookAtTarget);
 
-      // Light tracking
+      // Dynamic light tracking protagonist
       pointLight.position.set(charX, charY + 4, charZ + 2);
 
       // Reactor ring rotation in Foundry
@@ -379,8 +621,11 @@ export default function CinematicWorld3D() {
       ring2.rotation.y = time * 0.35;
       reactorCore.rotation.y = time * 0.2;
 
-      // Rotate monolith in Scene 06
+      // Monolith floating rotation in Zone 6
       monolith.rotation.y = time * 0.5;
+
+      // Arm segment micro-articulation
+      armSegment2.rotation.x = -0.5 + Math.sin(time * 2) * 0.15;
 
       renderer.render(scene, camera);
     };
