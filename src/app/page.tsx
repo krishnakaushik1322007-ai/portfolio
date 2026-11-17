@@ -1,59 +1,59 @@
 'use client';
 
 import React from 'react';
-import { TourProvider } from '@/context/TourContext';
-import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import ConstitutionalStack from '@/components/ConstitutionalStack';
-import CivicLensSection from '@/components/CivicLensSection';
-import GyanixSection from '@/components/GyanixSection';
-import SiliconFoundrySection from '@/components/SiliconFoundrySection';
-import ArchivesSection from '@/components/ArchivesSection';
-import ExecutiveLoungeSection from '@/components/ExecutiveLoungeSection';
-import Footer from '@/components/Footer';
-import TourHUD from '@/components/TourHUD';
-import FloorPlanModal from '@/components/FloorPlanModal';
+import { JourneyProvider } from '@/context/JourneyContext';
+import CinematicEnvironmentCanvas from '@/components/journey/CinematicEnvironmentCanvas';
+import JourneyHUD from '@/components/journey/JourneyHUD';
+import Chapter01Beginning from '@/components/journey/Chapter01Beginning';
+import Chapter02Foundation from '@/components/journey/Chapter02Foundation';
+import Chapter03Learning from '@/components/journey/Chapter03Learning';
+import Chapter04Building from '@/components/journey/Chapter04Building';
+import Chapter05Experience from '@/components/journey/Chapter05Experience';
+import Chapter06Milestones from '@/components/journey/Chapter06Milestones';
+import Chapter07Destination from '@/components/journey/Chapter07Destination';
+import JourneyFooter from '@/components/journey/JourneyFooter';
+import JourneyWaypointModal from '@/components/journey/JourneyWaypointModal';
 
 export default function HomePage() {
   return (
-    <TourProvider>
-      <div className="relative min-h-screen bg-[#07090e] text-slate-100 overflow-x-hidden flex flex-col justify-between selection:bg-[#e5b061]/30 selection:text-white">
+    <JourneyProvider>
+      <div className="relative min-h-screen bg-[#040711] text-slate-100 overflow-x-hidden flex flex-col justify-between selection:bg-[#38bdf8]/30 selection:text-white">
         
-        {/* Architectural Blueprint Navigation Bar */}
-        <Navbar />
+        {/* Dynamic Procedural Ambient Canvas (Sunrise Mountains to Cybernetic Metropolis) */}
+        <CinematicEnvironmentCanvas />
 
-        <main className="flex-1">
-          {/* STATION 01: The Grand Foyer (Executive Welcome & Studio Portrait) */}
-          <Hero />
+        {/* Persistent Journey Navigation & Recruiter Fast-Access HUD */}
+        <JourneyHUD />
 
-          {/* STATION 02: Autonomous Systems Lab (CampusOS AI & 7-Layer Stack) */}
-          <ConstitutionalStack />
+        <main className="relative flex-1 z-10">
+          {/* CHAPTER 01 — THE BEGINNING (Theme: Curiosity) */}
+          <Chapter01Beginning />
 
-          {/* STATION 03: Vision & Geospatial Observatory (CivicLens & PostGIS ST_DWithin) */}
-          <CivicLensSection />
+          {/* CHAPTER 02 — THE FOUNDATION (Theme: Education & Shoolini University 9.05 CGPA) */}
+          <Chapter02Foundation />
 
-          {/* STATION 04: Socratic Learning Pavilion (Gyanix Socratic Engine) */}
-          <GyanixSection />
+          {/* CHAPTER 03 — THE LEARNING PHASE (Theme: Discovering Technology & Skills) */}
+          <Chapter03Learning />
 
-          {/* STATION 05: Silicon Foundry & The Systems Matrix (ZENETH C++ & Systems Arsenal) */}
-          <SiliconFoundrySection />
+          {/* CHAPTER 04 — THE BUILDING PHASE (Theme: Turning Ideas Into Reality - CampusOS AI, Gyanix, CivicLens) */}
+          <Chapter04Building />
 
-          {/* STATION 06: Academic & Research Archives (Shoolini 9.05 CGPA, Corizo/IIT Bombay) */}
-          <ArchivesSection />
+          {/* CHAPTER 05 — THE PROFESSIONAL JOURNEY (Theme: Expanding Technical Horizons - Corizo / IIT Bombay) */}
+          <Chapter05Experience />
 
-          {/* STATION 07: Executive Boardroom & Dispatch Lounge (Direct Connect & Transmissions) */}
-          <ExecutiveLoungeSection />
+          {/* CHAPTER 06 — THE MILESTONES (Theme: Progress and Recognition - Anveshan Hackathon Round 2) */}
+          <Chapter06Milestones />
+
+          {/* CHAPTER 07 — WHAT COMES NEXT? (Theme: Ambition & Direct Dispatch Contact) */}
+          <Chapter07Destination />
         </main>
 
-        {/* Estate Curatorial Footer */}
-        <Footer />
+        {/* Narrative Journey Footer */}
+        <JourneyFooter />
 
-        {/* Floating Spatial Tour HUD Dock */}
-        <TourHUD />
-
-        {/* 2D Architectural Estate Blueprint Modal */}
-        <FloorPlanModal />
+        {/* Interactive 2D Visual Route Map Modal */}
+        <JourneyWaypointModal />
       </div>
-    </TourProvider>
+    </JourneyProvider>
   );
 }

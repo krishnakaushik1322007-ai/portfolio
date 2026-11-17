@@ -16,11 +16,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://krishnakaushik.dev'),
-  title: 'Krishna Kaushik | AI Engineer & Software Developer',
+  title: 'THE JOURNEY | Krishna Kaushik — AI Engineer & Software Developer',
   description:
-    'Personal portfolio of Krishna Kaushik — AI Engineer and CSE (AI) undergraduate at Shoolini University (9.05/10 CGPA). Building grounded intelligence, RAG engines, full-stack platforms, and deterministic C++ systems.',
+    'THE JOURNEY: From Curiosity to Engineering. An interactive cinematic portfolio by Krishna Kaushik — AI Engineer and CSE (AI) undergraduate at Shoolini University (9.05/10 CGPA). Building grounded intelligence, RAG engines, full-stack platforms, and deterministic C++ systems.',
   keywords: [
     'Krishna Kaushik',
+    'The Journey',
     'AI Engineer',
     'Software Developer',
     'Large Language Models',
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
     'CampusOS AI',
     'CivicLens',
     'Gyanix',
+    'ZENETH',
     'FastAPI',
     'Next.js',
     'PostgreSQL',
@@ -41,10 +43,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://krishnakaushik.dev',
-    title: 'Krishna Kaushik | AI Engineer & Software Developer',
+    title: 'THE JOURNEY | Krishna Kaushik — AI Engineer & Software Developer',
     description:
-      'Building Intelligent Systems. Engineering Real-World Solutions. Flagship projects in institutional AI, civic infrastructure intelligence, and self-reflective RAG.',
-    siteName: 'Krishna Kaushik Portfolio',
+      'From Curiosity to Engineering. An interactive storytelling experience exploring AI systems, institutional platforms, and high-performance engineering.',
+    siteName: 'Krishna Kaushik — The Journey',
     images: [
       {
         url: '/krishna_kaushik.jpg',
@@ -56,9 +58,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Krishna Kaushik | AI Engineer & Software Developer',
+    title: 'THE JOURNEY | Krishna Kaushik — AI Engineer & Software Developer',
     description:
-      'Building Intelligent Systems. Engineering Real-World Solutions. Portfolio & Case Studies.',
+      'From Curiosity to Engineering. An interactive storytelling portfolio exploring AI platforms, RAG engines, and deterministic C++ systems.',
     images: ['/krishna_kaushik.jpg']
   },
   icons: {
