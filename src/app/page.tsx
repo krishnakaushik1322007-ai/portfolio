@@ -1,59 +1,52 @@
 'use client';
 
 import React from 'react';
-import { JourneyProvider } from '@/context/JourneyContext';
-import CinematicEnvironmentCanvas from '@/components/journey/CinematicEnvironmentCanvas';
-import JourneyHUD from '@/components/journey/JourneyHUD';
-import Chapter01Beginning from '@/components/journey/Chapter01Beginning';
-import Chapter02Foundation from '@/components/journey/Chapter02Foundation';
-import Chapter03Learning from '@/components/journey/Chapter03Learning';
-import Chapter04Building from '@/components/journey/Chapter04Building';
-import Chapter05Experience from '@/components/journey/Chapter05Experience';
-import Chapter06Milestones from '@/components/journey/Chapter06Milestones';
-import Chapter07Destination from '@/components/journey/Chapter07Destination';
-import JourneyFooter from '@/components/journey/JourneyFooter';
-import JourneyWaypointModal from '@/components/journey/JourneyWaypointModal';
+import { MovieProvider, useMovie } from '@/context/MovieContext';
+import CinematicWorld3D from '@/components/movie/CinematicWorld3D';
+import CinematicNarrativeOverlay from '@/components/movie/CinematicNarrativeOverlay';
+import MoviePlayerControls from '@/components/movie/MoviePlayerControls';
+import MovieProjectModal from '@/components/movie/MovieProjectModal';
+import CinematicLetterbox from '@/components/movie/CinematicLetterbox';
+import CertificateModal from '@/components/CertificateModal';
+
+function MovieExperience() {
+  const { isCertificateModalOpen, setIsCertificateModalOpen } = useMovie();
+
+  return (
+    <div className="relative w-screen h-screen overflow-hidden bg-[#040711] text-slate-100 select-none">
+      
+      {/* Cinematic 2.39:1 Letterbox Scope & Audio Unlock */}
+      <CinematicLetterbox />
+
+      {/* The 3D World Canvas (Camera tracking, Traveler Character, 7 Continuous World Zones) */}
+      <CinematicWorld3D />
+
+      {/* Real-time Narrative Story Beats & Recruiter Fast-Access */}
+      <CinematicNarrativeOverlay />
+
+      {/* Floating Movie Player Transport Bar (Timeline scrubber, Play/Pause, Scene navigation) */}
+      <MoviePlayerControls />
+
+      {/* Interactive Project Case Study Modal (Pauses movie when inspected, resumes on close) */}
+      <MovieProjectModal />
+
+      {/* Anveshan Hackathon Certificate Modal */}
+      <CertificateModal
+        isOpen={isCertificateModalOpen}
+        onClose={() => setIsCertificateModalOpen(false)}
+        title="Anveshan Hackathon Round 2 Participation"
+        organization="Anveshan Competitive Hackathon Committee"
+        date="2026"
+        placeholderText="Official Anveshan Hackathon Round 2 Participation Certificate awarded to Krishna Kaushik"
+      />
+    </div>
+  );
+}
 
 export default function HomePage() {
   return (
-    <JourneyProvider>
-      <div className="relative min-h-screen bg-[#040711] text-slate-100 overflow-x-hidden flex flex-col justify-between selection:bg-[#38bdf8]/30 selection:text-white">
-        
-        {/* Dynamic Procedural Ambient Canvas (Sunrise Mountains to Cybernetic Metropolis) */}
-        <CinematicEnvironmentCanvas />
-
-        {/* Persistent Journey Navigation & Recruiter Fast-Access HUD */}
-        <JourneyHUD />
-
-        <main className="relative flex-1 z-10">
-          {/* CHAPTER 01 — THE BEGINNING (Theme: Curiosity) */}
-          <Chapter01Beginning />
-
-          {/* CHAPTER 02 — THE FOUNDATION (Theme: Education & Shoolini University 9.05 CGPA) */}
-          <Chapter02Foundation />
-
-          {/* CHAPTER 03 — THE LEARNING PHASE (Theme: Discovering Technology & Skills) */}
-          <Chapter03Learning />
-
-          {/* CHAPTER 04 — THE BUILDING PHASE (Theme: Turning Ideas Into Reality - CampusOS AI, Gyanix, CivicLens) */}
-          <Chapter04Building />
-
-          {/* CHAPTER 05 — THE PROFESSIONAL JOURNEY (Theme: Expanding Technical Horizons - Corizo / IIT Bombay) */}
-          <Chapter05Experience />
-
-          {/* CHAPTER 06 — THE MILESTONES (Theme: Progress and Recognition - Anveshan Hackathon Round 2) */}
-          <Chapter06Milestones />
-
-          {/* CHAPTER 07 — WHAT COMES NEXT? (Theme: Ambition & Direct Dispatch Contact) */}
-          <Chapter07Destination />
-        </main>
-
-        {/* Narrative Journey Footer */}
-        <JourneyFooter />
-
-        {/* Interactive 2D Visual Route Map Modal */}
-        <JourneyWaypointModal />
-      </div>
-    </JourneyProvider>
+    <MovieProvider>
+      <MovieExperience />
+    </MovieProvider>
   );
 }
