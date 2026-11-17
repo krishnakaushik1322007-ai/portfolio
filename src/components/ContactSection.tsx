@@ -10,7 +10,8 @@ import {
   Send, 
   Sparkles, 
   ArrowUpRight, 
-  ShieldCheck 
+  ShieldCheck,
+  RotateCcw
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from './BrandIcons';
 
@@ -39,7 +40,7 @@ export default function ContactSection() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoSubject = encodeURIComponent(subject || `Portfolio Inquiry from ${name}`);
+    const mailtoSubject = encodeURIComponent(subject || `Engineering Inquiry from ${name}`);
     const mailtoBody = encodeURIComponent(
       `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n\n[Sent from Krishna Kaushik's Portfolio]`
     );
@@ -47,220 +48,160 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative py-24 border-b border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative py-24 border-b border-white/[0.08] bg-[#050508]">
+      {/* Red vertical accent line */}
+      <div className="vertical-accent-line hidden md:block" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pl-4 md:pl-12">
         
-        {/* Section Header */}
-        <div className="flex flex-col items-start space-y-3 mb-16">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-sky-400">
-            <Mail className="w-3.5 h-3.5" />
-            <span>08 // INITIATE DIALOGUE</span>
+        {/* Section Header (Matching video "DIRECT CONNECT") */}
+        <div className="flex flex-col items-center text-center space-y-4 mb-14 max-w-3xl mx-auto">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-400">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span>DIRECT CONNECT</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Let&apos;s Build Something <span className="text-gradient-cyan">Intelligent Together</span>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+            Let&apos;s Architect Something <span className="text-red-500">Extraordinary</span>.
           </h2>
-          <p className="text-base sm:text-lg text-slate-400 max-w-3xl">
-            Open to software engineering internships, AI research roles, and technical collaborations at leading global technology organizations.
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+            Available for production autonomous AI system design, institutional engineering infrastructure, and full-stack software development roles worldwide.
           </p>
+
+          {/* High-Impact Solid Red Copy Email Button (Matching video center card) */}
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+            <a
+              href={`mailto:${emailAddress}`}
+              className="px-6 py-3.5 rounded-lg bg-black/60 border border-white/20 hover:border-red-500/50 text-white font-mono text-xs sm:text-sm font-semibold transition-colors"
+            >
+              {emailAddress}
+            </a>
+
+            <button
+              onClick={() => copyToClipboard(emailAddress, 'email')}
+              className="px-6 py-3.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center space-x-2"
+            >
+              {copiedEmail ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              <span>{copiedEmail ? 'Copied to Clipboard!' : 'Copy Email Address'}</span>
+            </button>
+          </div>
+
+          {/* Social Profiles Chips */}
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-3 text-xs font-mono">
+            <a
+              href="https://github.com/krishnakaushik1322007-ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 transition-colors"
+            >
+              <GithubIcon className="w-4 h-4 text-slate-400" />
+              <span>github.com/krishnakaushik1322007-ai</span>
+              <ArrowUpRight className="w-3 h-3 text-slate-500" />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/krishna-kaushik-559239366/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-sky-300 border border-white/10 transition-colors"
+            >
+              <LinkedinIcon className="w-4 h-4 text-sky-400" />
+              <span>linkedin.com/in/krishna-kaushik-559239366</span>
+              <ArrowUpRight className="w-3 h-3 text-slate-500" />
+            </a>
+
+            <button
+              onClick={() => copyToClipboard(phoneNumber, 'phone')}
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-300 hover:text-emerald-300 border border-white/10 transition-colors"
+            >
+              <Phone className="w-4 h-4 text-emerald-400" />
+              <span>{copiedPhone ? 'Phone Copied!' : phoneNumber}</span>
+            </button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Column: Direct Communication Channels */}
-          <div className="lg:col-span-5 space-y-6">
-            
-            <div className="p-6 rounded-2xl bg-[#0b0e14] border border-white/10 space-y-6 shadow-xl">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <span>Direct Contact Channels</span>
-              </h3>
-
-              {/* Email Card */}
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-sky-500/30 transition-all space-y-2 group">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-400 flex items-center space-x-2">
-                    <Mail className="w-3.5 h-3.5 text-sky-400" />
-                    <span>PRIMARY EMAIL</span>
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(emailAddress, 'email')}
-                    className="p-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-white transition-colors"
-                    title="Copy Email"
-                  >
-                    {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-                <a
-                  href={`mailto:${emailAddress}`}
-                  className="text-sm sm:text-base font-mono font-semibold text-white hover:text-sky-300 break-all transition-colors block"
-                >
-                  {emailAddress}
-                </a>
-                {copiedEmail && (
-                  <span className="text-[11px] font-mono text-emerald-400 block">
-                    &check; Copied to clipboard!
-                  </span>
-                )}
-              </div>
-
-              {/* Phone Card */}
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-sky-500/30 transition-all space-y-2 group">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-400 flex items-center space-x-2">
-                    <Phone className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>TELEPHONE &amp; WHATSAPP</span>
-                  </span>
-                  <button
-                    onClick={() => copyToClipboard(phoneNumber, 'phone')}
-                    className="p-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-slate-400 hover:text-white transition-colors"
-                    title="Copy Phone"
-                  >
-                    {copiedPhone ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-                <a
-                  href="tel:+919650246706"
-                  className="text-sm sm:text-base font-mono font-semibold text-white hover:text-emerald-300 transition-colors block"
-                >
-                  {phoneNumber}
-                </a>
-                {copiedPhone && (
-                  <span className="text-[11px] font-mono text-emerald-400 block">
-                    &check; Copied to clipboard!
-                  </span>
-                )}
-              </div>
-
-              {/* Location & Relocation */}
-              <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.06] space-y-2">
-                <span className="text-xs font-mono text-slate-400 flex items-center space-x-2">
-                  <MapPin className="w-3.5 h-3.5 text-violet-400" />
-                  <span>LOCATION &amp; AVAILABILITY</span>
-                </span>
-                <p className="text-sm font-semibold text-white">
-                  India (IST / UTC+5:30)
-                </p>
-                <p className="text-xs text-slate-400 font-mono">
-                  Available for in-person roles, relocation, and high-bandwidth distributed remote teams worldwide.
-                </p>
-              </div>
-
-              {/* Social Profiles */}
-              <div className="pt-2 flex items-center space-x-3">
-                <a
-                  href="https://www.linkedin.com/in/krishna-kaushik-559239366/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-[#0077b5]/15 hover:bg-[#0077b5]/25 border border-[#0077b5]/30 text-sky-200 text-xs font-mono font-bold transition-all"
-                >
-                  <LinkedinIcon className="w-4 h-4" />
-                  <span>LinkedIn</span>
-                  <ArrowUpRight className="w-3 h-3 text-sky-400" />
-                </a>
-
-                <a
-                  href="https://github.com/krishnakaushik1322007-ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-200 text-xs font-mono font-bold transition-all"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                  <span>GitHub</span>
-                  <ArrowUpRight className="w-3 h-3 text-slate-400" />
-                </a>
-              </div>
-
-            </div>
-
+        {/* Detailed Form Container */}
+        <div className="max-w-3xl mx-auto p-8 rounded-2xl bg-[#09090f] border border-white/10 shadow-2xl space-y-6">
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold text-white font-mono uppercase tracking-wider">
+              Transmit Encrypted Message
+            </h3>
+            <p className="text-xs font-mono text-slate-400">
+              Direct client draft formatting for immediate transmission.
+            </p>
           </div>
 
-          {/* Right Column: Reliable Mailto Contact Form */}
-          <div className="lg:col-span-7">
-            <div className="p-8 rounded-2xl bg-[#0b0e14] border border-white/10 shadow-xl space-y-6">
-              
-              <div className="space-y-1">
-                <h3 className="text-xl font-bold text-white">Send a Direct Message</h3>
-                <p className="text-xs font-mono text-slate-400">
-                  Submitting formats your request into a secure client mail draft to guarantee immediate delivery.
-                </p>
+          <form onSubmit={handleSubmit} className="space-y-4 font-mono text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-[11px] text-slate-400 uppercase tracking-wider">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Hiring Partner / Lead Architect"
+                  className="w-full px-4 py-2.5 rounded-lg bg-black/50 border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-red-500/60"
+                />
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Satya Nadella / Hiring Manager"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500/50 transition-colors"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                      Your Work Email
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. recruiter@company.com"
-                      className="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500/50 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                    Subject / Opportunity
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder="e.g. AI Engineering Internship / Technical Opportunity"
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500/50 transition-colors"
-                  />
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                    Message Details
-                  </label>
-                  <textarea
-                    required
-                    rows={5}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Discuss project requirements, role scope, or technical questions..."
-                    className="w-full px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder-slate-600 text-sm focus:outline-none focus:border-sky-500/50 transition-colors resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-slate-950 font-bold text-sm tracking-wide transition-all shadow-[0_0_25px_rgba(56,189,248,0.3)] hover:shadow-[0_0_35px_rgba(56,189,248,0.5)] flex items-center justify-center space-x-2"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Draft &amp; Dispatch Message</span>
-                </button>
-              </form>
-
-              <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-slate-500">
-                <span className="flex items-center space-x-1">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Zero tracking &bull; Privacy preserved</span>
-                </span>
-                <span>Response SLA: &lt; 24 Hours</span>
+              <div className="space-y-1.5">
+                <label className="text-[11px] text-slate-400 uppercase tracking-wider">
+                  Your Work Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g. talent@company.com"
+                  className="w-full px-4 py-2.5 rounded-lg bg-black/50 border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-red-500/60"
+                />
               </div>
-
             </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[11px] text-slate-400 uppercase tracking-wider">
+                Subject
+              </label>
+              <input
+                type="text"
+                required
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="e.g. AI Engineering Role / Technical Collaboration"
+                className="w-full px-4 py-2.5 rounded-lg bg-black/50 border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-red-500/60"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[11px] text-slate-400 uppercase tracking-wider">
+                Project / Message Scope
+              </label>
+              <textarea
+                required
+                rows={4}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Discuss systems architecture, role requirements, or project details..."
+                className="w-full px-4 py-2.5 rounded-lg bg-black/50 border border-white/10 text-white placeholder-slate-600 focus:outline-none focus:border-red-500/60 resize-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center space-x-2"
+            >
+              <Send className="w-4 h-4" />
+              <span>DISPATCH MESSAGE</span>
+            </button>
+          </form>
+
+          {/* Bottom Telemetry Note matching video */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
+            <span>&copy; 2026 Krishna Kaushik &bull; Shoolini University B.Tech CSE (AI)</span>
+            <span className="text-red-400">Response SLA: &lt; 24h</span>
           </div>
 
         </div>
