@@ -1,21 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050508;
-  --foreground: #f4f4f7;
-  --surface-0: #050508;
-  --surface-1: #0a0a0f;
-  --surface-2: #111118;
-  --surface-card: rgba(13, 13, 20, 0.85);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(239, 68, 68, 0.4);
-  --accent-red: #ef4444;
-  --accent-coral: #ff3344;
-  --accent-cyan: #38bdf8;
+  --background: #07090e;
+  --foreground: #f4f6fa;
+  --surface-0: #07090e;
+  --surface-1: #0d111a;
+  --surface-2: #141a27;
+  --surface-card: rgba(13, 17, 26, 0.88);
+  --border-subtle: rgba(229, 176, 97, 0.12);
+  --border-active: rgba(229, 176, 97, 0.5);
+  --accent-gold: #e5b061;
   --accent-amber: #f59e0b;
+  --accent-emerald: #10b981;
+  --accent-cyan: #38bdf8;
   --mouse-x: 50vw;
   --mouse-y: 50vh;
-  --scroll-velocity: 0px;
 }
 
 @theme inline {
@@ -28,45 +27,49 @@
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
-  background-color: #050508;
+  background-color: #07090e;
 }
 
 body {
-  background-color: #050508;
-  color: #f4f4f7;
+  background-color: #07090e;
+  color: #f4f6fa;
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
-  selection-background-color: rgba(239, 68, 68, 0.3);
-  selection-color: #ffffff;
 }
 
 ::selection {
-  background-color: rgba(239, 68, 68, 0.3);
+  background-color: rgba(229, 176, 97, 0.3);
   color: #ffffff;
 }
 
-/* Custom sleek scrollbar */
+/* Custom sleek gold scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050508;
+  background: #07090e;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1f1f2e;
+  background: #1a2233;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #ef4444;
+  background: #e5b061;
 }
 
-/* Outlined typography for giant background titles */
+/* Outlined typography for luxury spatial station titles */
 .text-outline-hollow {
-  -webkit-text-stroke: 1.5px rgba(239, 68, 68, 0.22);
+  -webkit-text-stroke: 1.5px rgba(229, 176, 97, 0.22);
+  color: transparent;
+  user-select: none;
+}
+
+.text-outline-gold {
+  -webkit-text-stroke: 1.5px rgba(229, 176, 97, 0.4);
   color: transparent;
   user-select: none;
 }
@@ -77,84 +80,56 @@ body {
   user-select: none;
 }
 
-/* Red Vertical Line Indicator */
+/* Luxury Gold Vertical Guide Indicator */
 .vertical-accent-line {
   position: absolute;
   left: 24px;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, #ef4444 0%, rgba(239, 68, 68, 0.1) 80%, transparent 100%);
+  background: linear-gradient(180deg, #e5b061 0%, rgba(229, 176, 97, 0.12) 80%, transparent 100%);
   pointer-events: none;
 }
 
-/* DYNAMIC CURSOR SPOTLIGHT ON CARDS AND BORDERS */
-/* This makes cards illuminate and come alive as the cursor moves or user scrolls past them! */
-.cursor-spotlight {
-  position: relative;
-  background-color: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.cursor-spotlight::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    380px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(239, 68, 68, 0.14),
-    transparent 80%
-  );
-  opacity: 0.8;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.cursor-spotlight:hover {
-  border-color: rgba(239, 68, 68, 0.45);
-  box-shadow: 0 10px 35px -10px rgba(239, 68, 68, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Glassmorphism utility classes */
-.glass-panel {
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.glass-panel-hover {
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.glass-panel-hover:hover {
-  border-color: rgba(239, 68, 68, 0.5);
-  box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.18);
-  transform: translateY(-2px);
-}
-
-/* Subtle Grid with Cursor Spotlight Wave */
-.bg-grid-subtle {
-  background-size: 36px 36px;
+/* Architectural blueprint grid */
+.bg-grid-blueprint {
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(to right, rgba(229, 176, 97, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(229, 176, 97, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+.bg-grid-subtle {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Luxury Gold & Emerald Gradients */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #ffffff 20%, #e5b061 70%, #d49539 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #ffffff 20%, #34d399 70%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Smooth Station Card */
+.station-card {
+  position: relative;
+  background: rgba(13, 17, 26, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(229, 176, 97, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.station-card:hover {
+  border-color: rgba(229, 176, 97, 0.4);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(229, 176, 97, 0.15);
 }

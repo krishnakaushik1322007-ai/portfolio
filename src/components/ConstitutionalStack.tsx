@@ -13,8 +13,11 @@ import {
   Sparkles, 
   Terminal, 
   Activity, 
-  ArrowRight 
+  ArrowRight,
+  Compass,
+  ChevronRight
 } from 'lucide-react';
+import { useTour } from '@/context/TourContext';
 
 interface LayerInfo {
   id: string;
@@ -136,80 +139,98 @@ const STACK_LAYERS: LayerInfo[] = [
 
 export default function ConstitutionalStack() {
   const [activeLayer, setActiveLayer] = useState<LayerInfo>(STACK_LAYERS[0]);
+  const { nextStation } = useTour();
 
   return (
-    <section id="flagships" className="relative py-24 border-b border-white/[0.08] bg-[#07070b]">
-      {/* Left Red Vertical Accent Line */}
+    <section id="campusos" className="relative py-24 border-b border-white/[0.08] bg-[#07090e]">
+      {/* Luxury Gold Vertical Guide Indicator */}
       <div className="vertical-accent-line hidden md:block" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pl-4 md:pl-12">
         
-        {/* Header Block matching the reference video */}
-        <div className="space-y-3 mb-12">
-          <div className="text-xs font-mono text-slate-500 tracking-wider">
-            //02.00 SEC_SHOWCASE INDEX [02/05]
+        {/* Station Identification Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] mb-8 gap-4">
+          <div className="space-y-2">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#e5b061]/10 border border-[#e5b061]/30 text-xs font-mono text-[#e5b061]">
+              <span className="w-2 h-2 rounded-full bg-[#e5b061] animate-ping" />
+              <span>STATION 02 // AUTONOMOUS SYSTEMS LAB &bull; FLAGSHIP PLATFORM</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+              CampusOS AI &mdash; <span className="text-gradient-gold">7-Layer Architecture</span>
+            </h2>
           </div>
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-400">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span>ARCHITECTURAL SHOWCASE</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
-            Flagship <span className="text-red-500">Deployments</span>
-          </h2>
-          <p className="text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed font-mono">
-            Production-grade systems running 24/7 across local silicon, cloud backends, and institutional endpoints.
-          </p>
+
+          <button
+            onClick={nextStation}
+            className="px-4 py-2 rounded-lg bg-[#e5b061]/10 hover:bg-[#e5b061] text-[#e5b061] hover:text-[#07090e] border border-[#e5b061]/30 font-mono text-xs font-bold uppercase tracking-wider transition-all self-start sm:self-auto flex items-center space-x-1.5"
+          >
+            <span>Proceed to Station 03</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Flagship Card: CampusOS AI with 7-Layer Stack */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-[#09090f] border border-white/10 space-y-6 mb-8">
+        {/* Docent Commentary Box */}
+        <div className="p-4 rounded-xl bg-white/[0.02] border border-[#e5b061]/20 font-mono text-xs text-slate-300 mb-10 flex items-start space-x-3">
+          <Compass className="w-4 h-4 text-[#e5b061] shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <span className="text-[#e5b061] font-bold text-[11px] uppercase tracking-wider block">
+              TOUR GUIDE NOTES // FLAGSHIP INSTITUTIONAL ECOSYSTEM
+            </span>
+            <p className="leading-relaxed">
+              CampusOS AI is an AI-powered operating platform designed to modernize school administration across Students, Teachers, Administrators, Accounts Officers, and Parents. Hardened with PBKDF2-HMAC-SHA256 password cryptography, Refresh Token Rotation, Double-Submit CSRF cookie protection, and pgvector cosine matching.
+            </p>
+          </div>
+        </div>
+
+        {/* Main Station Display Card */}
+        <div className="p-6 sm:p-8 rounded-2xl bg-[#0d111a] border border-[#e5b061]/25 space-y-6 shadow-2xl mb-8">
           
           <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/[0.08] gap-4">
             <div>
-              <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/30 text-[10px] font-mono uppercase tracking-wider mb-2">
-                <span>CORE FLAGSHIP PLATFORM</span>
+              <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded bg-[#e5b061]/10 text-[#e5b061] border border-[#e5b061]/30 text-[10px] font-mono uppercase tracking-wider mb-2">
+                <span>VERIFIED TEST HARNESS</span>
               </div>
               <h3 className="text-2xl sm:text-3xl font-black text-white">
-                CampusOS AI &mdash; 7-Layer Autonomous Architecture
+                510 QA Suites Collected (487 Passed, 23 Skipped)
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-3xl mt-1">
-                A persistent institutional operating platform modernizing school administration across 5 user tiers, featuring 510 automated QA suites, Supabase pgvector RAG, and PBKDF2 cryptography.
+              <p className="text-xs sm:text-sm text-slate-400 max-w-3xl mt-1 font-mono">
+                Comprehensive automated verification across API endpoints, pgvector retrieval bounds, and role-based access control.
               </p>
             </div>
 
             <Link
               href="/projects/campusos-ai"
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold uppercase tracking-wider transition-all shrink-0 self-start sm:self-auto flex items-center space-x-1.5 shadow-[0_0_15px_rgba(239,68,68,0.3)]"
+              className="px-4 py-2 rounded-lg bg-[#e5b061] hover:bg-[#d49539] text-[#07090e] font-mono text-xs font-bold uppercase tracking-wider transition-all shrink-0 self-start sm:self-auto flex items-center space-x-1.5 shadow-[0_0_15px_rgba(229,176,97,0.3)]"
             >
-              <span>Deep Teardown</span>
+              <span>Full Case Study</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
-          {/* 4 Stat Counters Bar (matching video) */}
+          {/* 4 Stat Counters Bar */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 font-mono">
-            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.08] border-l-2 border-l-red-500">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-[#e5b061]/20 border-l-2 border-l-[#e5b061]">
               <div className="text-2xl sm:text-3xl font-extrabold text-white">510</div>
               <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">CampusOS QA Suites</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.08] border-l-2 border-l-sky-500">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-emerald-500/20 border-l-2 border-l-emerald-500">
               <div className="text-2xl sm:text-3xl font-extrabold text-white">100 / 100</div>
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">CivicLens Tests Passing</div>
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">CivicLens Tests Passed</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.08] border-l-2 border-l-emerald-500">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-amber-500/20 border-l-2 border-l-amber-500">
               <div className="text-2xl sm:text-3xl font-extrabold text-white">9.05 / 10</div>
               <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Shoolini University CGPA</div>
             </div>
-            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-white/[0.08] border-l-2 border-l-amber-500">
+            <div className="p-3.5 rounded-xl bg-white/[0.02] border border-sky-500/20 border-l-2 border-l-sky-500">
               <div className="text-2xl sm:text-3xl font-extrabold text-white">&lt;500ms</div>
               <div className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Gemini Vision Triage</div>
             </div>
           </div>
 
-          {/* Sub-heading for Stack */}
+          {/* 7-Layer Constitutional Stack Console */}
           <div className="pt-2">
-            <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-3">
-              7-Layer Constitutional Stack &bull; Click layer to inspect implementation
+            <div className="text-xs font-mono font-bold text-[#e5b061] uppercase tracking-wider mb-3">
+              Station Console &bull; Click layer to inspect architectural implementation
             </div>
 
             {/* Layer Tabs Strip */}
@@ -222,7 +243,7 @@ export default function ConstitutionalStack() {
                     onClick={() => setActiveLayer(layer)}
                     className={`px-3.5 py-2 rounded-lg text-xs font-mono whitespace-nowrap transition-all duration-200 border ${
                       isActive
-                        ? 'bg-red-500 text-white font-bold border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.4)]'
+                        ? 'bg-[#e5b061] text-[#07090e] font-bold border-[#e5b061] shadow-[0_0_15px_rgba(229,176,97,0.4)]'
                         : 'bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 hover:text-white border-white/[0.08]'
                     }`}
                   >
@@ -233,17 +254,17 @@ export default function ConstitutionalStack() {
             </div>
 
             {/* Active Layer Details Card */}
-            <div className="mt-4 p-6 rounded-xl bg-black/50 border border-red-500/30 shadow-[0_10px_30px_rgba(0,0,0,0.8)] space-y-4">
+            <div className="mt-4 p-6 rounded-xl bg-black/60 border border-[#e5b061]/30 shadow-[0_10px_30px_rgba(0,0,0,0.8)] space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-white/[0.08] gap-2">
                 <div>
-                  <span className="text-xs font-mono font-bold text-red-400 tracking-wider">
+                  <span className="text-xs font-mono font-bold text-[#e5b061] tracking-wider">
                     {activeLayer.tag}
                   </span>
                   <h4 className="text-xl font-bold text-white tracking-tight mt-0.5">
                     {activeLayer.title}
                   </h4>
                 </div>
-                <span className="px-3 py-1 rounded-full text-xs font-mono bg-red-500/10 text-red-300 border border-red-500/30 self-start sm:self-auto">
+                <span className="px-3 py-1 rounded-full text-xs font-mono bg-[#e5b061]/10 text-[#e5b061] border border-[#e5b061]/30 self-start sm:self-auto">
                   {activeLayer.highlight}
                 </span>
               </div>
@@ -270,74 +291,6 @@ export default function ConstitutionalStack() {
               </div>
             </div>
 
-          </div>
-
-        </div>
-
-        {/* Sibling Flagships Grid matching video */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-          
-          {/* Sibling 1: CivicLens */}
-          <div className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:border-sky-500/40 transition-all group space-y-3">
-            <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-sky-400 font-bold">MUNICIPAL // CIVIC TECH</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">100/100 TESTS</span>
-            </div>
-            <h4 className="text-lg font-bold text-white group-hover:text-sky-300 transition-colors">
-              CivicLens Municipal Platform
-            </h4>
-            <p className="text-xs text-slate-400 line-clamp-2">
-              PostGIS spatial clustering (&le;50m deduplication) and Gemini 2.5 Flash multimodal vision triage for city grievance workflows.
-            </p>
-            <Link
-              href="/projects/civiclens"
-              className="text-xs font-mono text-sky-400 hover:text-sky-300 flex items-center space-x-1 pt-1"
-            >
-              <span>Read Teardown</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          {/* Sibling 2: Gyanix */}
-          <div className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:border-emerald-500/40 transition-all group space-y-3">
-            <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-emerald-400 font-bold">PEDAGOGICAL // EDTECH</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">41 STATES</span>
-            </div>
-            <h4 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
-              Gyanix Socratic Dataset
-            </h4>
-            <p className="text-xs text-slate-400 line-clamp-2">
-              Curriculum-aligned multi-turn Socratic dialogue engine for CBSE Class 12 Physics with 0 schema validation errors.
-            </p>
-            <Link
-              href="/projects/gyanix"
-              className="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center space-x-1 pt-1"
-            >
-              <span>Read Teardown</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-
-          {/* Sibling 3: ZENETH */}
-          <div className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:border-violet-500/40 transition-all group space-y-3">
-            <div className="flex items-center justify-between text-xs font-mono">
-              <span className="text-violet-400 font-bold">EMBEDDED // C++ STL</span>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-violet-500/10 text-violet-300 border border-violet-500/20">100% OFFLINE</span>
-            </div>
-            <h4 className="text-lg font-bold text-white group-hover:text-violet-300 transition-colors">
-              ZENETH C++ Expert System
-            </h4>
-            <p className="text-xs text-slate-400 line-clamp-2">
-              Offline-first crop disease diagnostic rule engine written in native C++ using Standard Template Library algorithms (&lt;1ms query search).
-            </p>
-            <Link
-              href="/projects/zeneth"
-              className="text-xs font-mono text-violet-400 hover:text-violet-300 flex items-center space-x-1 pt-1"
-            >
-              <span>Read Teardown</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
           </div>
 
         </div>

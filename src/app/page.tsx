@@ -1,66 +1,59 @@
 'use client';
 
 import React from 'react';
+import { TourProvider } from '@/context/TourContext';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import LiveAgentPrototypeStudio from '@/components/LiveAgentPrototypeStudio';
 import ConstitutionalStack from '@/components/ConstitutionalStack';
-import FeaturedProjects from '@/components/FeaturedProjects';
-import ProofMetrics from '@/components/ProofMetrics';
-import AboutSection from '@/components/AboutSection';
-import SkillsSection from '@/components/SkillsSection';
-import ExperienceSection from '@/components/ExperienceSection';
-import EducationSection from '@/components/EducationSection';
-import AchievementsSection from '@/components/AchievementsSection';
-import InteractiveTerminal from '@/components/InteractiveTerminal';
-import ContactSection from '@/components/ContactSection';
+import CivicLensSection from '@/components/CivicLensSection';
+import GyanixSection from '@/components/GyanixSection';
+import SiliconFoundrySection from '@/components/SiliconFoundrySection';
+import ArchivesSection from '@/components/ArchivesSection';
+import ExecutiveLoungeSection from '@/components/ExecutiveLoungeSection';
 import Footer from '@/components/Footer';
+import TourHUD from '@/components/TourHUD';
+import FloorPlanModal from '@/components/FloorPlanModal';
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen bg-[#050508] text-slate-100 overflow-hidden flex flex-col justify-between selection:bg-red-500/30 selection:text-white">
-      {/* Navigation */}
-      <Navbar />
+    <TourProvider>
+      <div className="relative min-h-screen bg-[#07090e] text-slate-100 overflow-x-hidden flex flex-col justify-between selection:bg-[#e5b061]/30 selection:text-white">
+        
+        {/* Architectural Blueprint Navigation Bar */}
+        <Navbar />
 
-      <main className="flex-1">
-        {/* Cinematic Hero */}
-        <Hero />
+        <main className="flex-1">
+          {/* STATION 01: The Grand Foyer (Executive Welcome & Studio Portrait) */}
+          <Hero />
 
-        {/* Live Autonomous Agent Prototype Studio (Interactive agent build workbench) */}
-        <LiveAgentPrototypeStudio />
+          {/* STATION 02: Autonomous Systems Lab (CampusOS AI & 7-Layer Stack) */}
+          <ConstitutionalStack />
 
-        {/* 7-Layer Autonomous Engineering Stack (Flagships) */}
-        <ConstitutionalStack />
+          {/* STATION 03: Vision & Geospatial Observatory (CivicLens & PostGIS ST_DWithin) */}
+          <CivicLensSection />
 
-        {/* The Systems Matrix Project Showcase */}
-        <FeaturedProjects />
+          {/* STATION 04: Socratic Learning Pavilion (Gyanix Socratic Engine) */}
+          <GyanixSection />
 
-        {/* Ground-Truth Metrics */}
-        <ProofMetrics />
+          {/* STATION 05: Silicon Foundry & The Systems Matrix (ZENETH C++ & Systems Arsenal) */}
+          <SiliconFoundrySection />
 
-        {/* Engineering Profile & Philosophy */}
-        <AboutSection />
+          {/* STATION 06: Academic & Research Archives (Shoolini 9.05 CGPA, Corizo/IIT Bombay) */}
+          <ArchivesSection />
 
-        {/* Technical Arsenal Matrix */}
-        <SkillsSection />
+          {/* STATION 07: Executive Boardroom & Dispatch Lounge (Direct Connect & Transmissions) */}
+          <ExecutiveLoungeSection />
+        </main>
 
-        {/* Structured Internship Timeline */}
-        <ExperienceSection />
+        {/* Estate Curatorial Footer */}
+        <Footer />
 
-        {/* Academic Credentials */}
-        <EducationSection />
+        {/* Floating Spatial Tour HUD Dock */}
+        <TourHUD />
 
-        {/* Competitive Milestones & Hackathons */}
-        <AchievementsSection />
-
-        {/* Recruiter CLI Sandbox */}
-        <InteractiveTerminal />
-
-        {/* Direct Connect */}
-        <ContactSection />
-      </main>
-
-      <Footer />
-    </div>
+        {/* 2D Architectural Estate Blueprint Modal */}
+        <FloorPlanModal />
+      </div>
+    </TourProvider>
   );
 }
