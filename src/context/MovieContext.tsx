@@ -18,72 +18,92 @@ export const MOVIE_SCENES: SceneMeta[] = [
   {
     index: 0,
     id: 'opening',
-    title: 'THE OPENING',
-    subtitle: 'Every Journey Begins With a Dream',
-    theme: 'Curiosity & The Mountain Road at Dawn',
+    title: 'THE BEGINNING',
+    subtitle: 'Every Journey Begins with Curiosity',
+    theme: 'Curiosity & Mountain Road at Dawn',
     startProgress: 0.0,
-    endProgress: 0.14,
+    endProgress: 0.11,
     durationLabel: '10s'
   },
   {
     index: 1,
-    id: 'foundation',
+    id: 'university',
     title: 'THE FOUNDATION',
-    subtitle: 'Every Engineer Needs a Strong Foundation',
-    theme: 'Shoolini University & 9.05 CGPA',
-    startProgress: 0.14,
-    endProgress: 0.28,
-    durationLabel: '12s'
+    subtitle: 'Academic Rigor & Shoolini University',
+    theme: 'Collegiate Quad & 9.05 CGPA',
+    startProgress: 0.11,
+    endProgress: 0.22,
+    durationLabel: '10s'
   },
   {
     index: 2,
-    id: 'awakening',
-    title: 'THE AWAKENING',
+    id: 'technology',
+    title: 'LEARNING & TECHNOLOGY',
     subtitle: 'Curiosity Became Learning. Learning Became the Desire to Build.',
-    theme: 'Cybernetic R&D Laboratory',
-    startProgress: 0.28,
-    endProgress: 0.42,
-    durationLabel: '14s'
+    theme: 'Cybernetic Lab & Software Stack',
+    startProgress: 0.22,
+    endProgress: 0.33,
+    durationLabel: '12s'
   },
   {
     index: 3,
-    id: 'creation',
-    title: 'THE CREATION',
-    subtitle: 'Ideas Become Meaningful When We Build Them',
-    theme: 'The Engineering Foundry & 6 Interactive Projects',
-    startProgress: 0.42,
-    endProgress: 0.65,
-    durationLabel: '25s'
+    id: 'campusos',
+    title: 'CAMPUSOS AI',
+    subtitle: 'An AI-Powered Institutional Operating Platform',
+    theme: 'Flagship Architecture & 5 Stakeholders',
+    startProgress: 0.33,
+    endProgress: 0.46,
+    durationLabel: '15s'
   },
   {
     index: 4,
-    id: 'experience',
-    title: 'THE PROFESSIONAL JOURNEY',
-    subtitle: 'Expanding Technical Horizons',
-    theme: 'Corizo / IIT Bombay Robotics & R&D',
-    startProgress: 0.65,
-    endProgress: 0.78,
+    id: 'gyanix',
+    title: 'GYANIX',
+    subtitle: 'Curriculum-Aware Socratic AI Learning Assistant',
+    theme: 'Educational AI & CBSE 11-12 Physics',
+    startProgress: 0.46,
+    endProgress: 0.58,
     durationLabel: '12s'
   },
   {
     index: 5,
-    id: 'milestones',
-    title: 'THE MILESTONES',
-    subtitle: 'Progress, Validation & Recognition',
-    theme: 'Mountain Summit & Anveshan Hackathon Round 2',
-    startProgress: 0.78,
-    endProgress: 0.88,
-    durationLabel: '10s'
+    id: 'projects',
+    title: 'SPECIALIZED ENGINEERING',
+    subtitle: 'CivicLens, Financial Advisor, Agentic RAG & ZENETH',
+    theme: 'Autonomous Systems & Native C++ Engine',
+    startProgress: 0.58,
+    endProgress: 0.70,
+    durationLabel: '14s'
   },
   {
     index: 6,
+    id: 'internship',
+    title: 'PROFESSIONAL JOURNEY',
+    subtitle: 'Corizo Programme (In Collaboration with IIT Bombay)',
+    theme: 'IoT, Robotics & Advanced Hardware Labs',
+    startProgress: 0.70,
+    endProgress: 0.80,
+    durationLabel: '12s'
+  },
+  {
+    index: 7,
+    id: 'hackathon',
+    title: 'THE MILESTONES',
+    subtitle: 'Anveshan Hackathon — Advanced to Round 2',
+    theme: 'Mountain Summit & Architectural Validation',
+    startProgress: 0.80,
+    endProgress: 0.90,
+    durationLabel: '10s'
+  },
+  {
+    index: 8,
     id: 'destination',
-    title: 'THE DESTINATION',
-    subtitle: 'This Is Not the Destination. It Is Just the Beginning.',
-    theme: 'Futuristic Sunrise Metropolis & Contact',
-    startProgress: 0.88,
+    title: 'THE FINAL DESTINATION',
+    subtitle: 'The Journey Has Just Begun',
+    theme: 'Sunrise Metropolis & Recruiter Contact',
+    startProgress: 0.90,
     endProgress: 1.0,
-    durationLabel: '15s'
+    durationLabel: '12s'
   }
 ];
 

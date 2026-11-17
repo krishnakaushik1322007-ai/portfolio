@@ -9,15 +9,17 @@ class CinematicSoundEngine {
   private droneFilter: BiquadFilterNode | null = null;
   private currentSceneIdx: number = 0;
 
-  // Scene Chord Frequencies (Fundamental, 5th, Octave, Color note)
+  // Scene Chord Frequencies (Fundamental, 5th, Octave, Color note) for 9 Scenes
   private sceneChords: number[][] = [
-    [73.42, 110.0, 146.83, 185.0],   // Scene 1: D Major Dawn
-    [98.0, 146.83, 196.0, 246.94],    // Scene 2: G Major Collegiate
-    [110.0, 164.81, 220.0, 261.63],   // Scene 3: A Minor Cybernetic
-    [87.31, 130.81, 174.61, 220.0],   // Scene 4: F Major Engineering Foundry
-    [82.41, 123.47, 164.81, 207.65],  // Scene 5: E Major Research
-    [73.42, 110.0, 146.83, 220.0],    // Scene 6: D Major Summit
-    [65.41, 98.0, 130.81, 164.81]     // Scene 7: C Major Metropolis Finale
+    [73.42, 110.0, 146.83, 185.0],    // Scene 1: D Major Dawn (The Beginning)
+    [98.0, 146.83, 196.0, 246.94],    // Scene 2: G Major Collegiate (University)
+    [110.0, 164.81, 220.0, 261.63],   // Scene 3: A Minor Cybernetic (Learning & Tech)
+    [87.31, 130.81, 174.61, 220.0],   // Scene 4: F Major Foundry (CampusOS AI)
+    [103.83, 155.56, 207.65, 246.94], // Scene 5: G# Minor Socratic AI (Gyanix)
+    [92.5, 138.59, 185.0, 233.08],    // Scene 6: F# Minor Advanced Systems (Other Projects)
+    [82.41, 123.47, 164.81, 207.65],  // Scene 7: E Major Robotics (Internship)
+    [73.42, 110.0, 146.83, 220.0],    // Scene 8: D Major Summit (Anveshan Hackathon)
+    [65.41, 98.0, 130.81, 164.81]     // Scene 9: C Major Metropolis Finale (The Final Destination)
   ];
 
   public init() {
@@ -155,6 +157,28 @@ class CinematicSoundEngine {
 
       osc.start(now);
       osc.stop(now + 0.6);
+    } catch {}
+  }
+
+  public playRevealPulse(freq = 520) {
+    if (!this.ctx || this.isMuted || !this.masterGain) return;
+    try {
+      const now = this.ctx.currentTime;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now);
+      osc.frequency.exponentialRampToValueAtTime(freq * 1.25, now + 0.4);
+
+      gain.gain.setValueAtTime(0.025, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+
+      osc.start(now);
+      osc.stop(now + 0.9);
     } catch {}
   }
 }
