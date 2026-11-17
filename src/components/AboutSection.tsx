@@ -44,10 +44,10 @@ export default function AboutSection() {
         {/* Section Header */}
         <div className="flex flex-col items-start space-y-3 mb-16">
           <div className="text-xs font-mono text-slate-500 tracking-wider">
-            //01.00 SEC_ABOUT INDEX [01/05]
+            //01.00 SEC_ABOUT INDEX [AGENT_COMPILED]
           </div>
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-400">
-            <span className="w-2 h-2 rounded-full bg-red-500" />
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
             <span>ENGINEER PROFILE</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
@@ -64,12 +64,27 @@ export default function AboutSection() {
           {/* Narrative Column */}
           <div className="lg:col-span-7 space-y-6 text-slate-300 leading-relaxed text-base">
             
-            {/* Academic Background */}
+            {/* Academic Background with Real Photo Chip */}
             <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <Brain className="w-5 h-5 text-sky-400" />
-                <span>Academic Foundation & Background</span>
-              </h3>
+              <div className="flex items-center space-x-3 pb-3 border-b border-white/[0.06]">
+                <img
+                  src="/krishna_kaushik.jpg"
+                  alt="Krishna Kaushik"
+                  className="w-12 h-12 rounded-full object-cover object-top border-2 border-red-500 shadow-[0_0_12px_rgba(239,68,68,0.3)] shrink-0"
+                />
+                <div>
+                  <h3 className="text-base font-bold text-white flex items-center space-x-2">
+                    <span>Krishna Kaushik</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
+                      CGPA 9.05 / 10
+                    </span>
+                  </h3>
+                  <div className="text-xs font-mono text-slate-400">
+                    B.Tech CSE (Artificial Intelligence) &bull; Shoolini University (2025–2029)
+                  </div>
+                </div>
+              </div>
+
               <p>
                 I am a Computer Science and Engineering undergraduate specializing in Artificial Intelligence at 
                 <strong className="text-white font-semibold"> Shoolini University</strong> (2025–2029) where I maintain a 
@@ -140,7 +155,7 @@ export default function AboutSection() {
               <div className="space-y-2 text-slate-300">
                 <div className="flex justify-between py-1 border-b border-white/[0.04]">
                   <span className="text-slate-400">Current Role</span>
-                  <span>B.Tech CSE (AI) Student & Developer</span>
+                  <span>B.Tech CSE (AI) Student &amp; Developer</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/[0.04]">
                   <span className="text-slate-400">Academic Standing</span>

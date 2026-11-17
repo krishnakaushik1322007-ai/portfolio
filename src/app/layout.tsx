@@ -47,10 +47,10 @@ export const metadata: Metadata = {
     siteName: 'Krishna Kaushik Portfolio',
     images: [
       {
-        url: '/projects/campusos/00_platform_ecosystem.png',
-        width: 1200,
-        height: 630,
-        alt: 'Krishna Kaushik Engineering Portfolio'
+        url: '/krishna_kaushik.jpg',
+        width: 1024,
+        height: 1024,
+        alt: 'Krishna Kaushik - AI Engineer & Software Developer'
       }
     ]
   },
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     title: 'Krishna Kaushik | AI Engineer & Software Developer',
     description:
       'Building Intelligent Systems. Engineering Real-World Solutions. Portfolio & Case Studies.',
-    images: ['/projects/campusos/00_platform_ecosystem.png']
+    images: ['/krishna_kaushik.jpg']
   },
   icons: {
     icon: '/favicon.ico'
