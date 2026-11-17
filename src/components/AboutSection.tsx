@@ -11,45 +11,58 @@ import {
   ShieldCheck, 
   ArrowUpRight 
 } from 'lucide-react';
+import BuilderWireframeBox from './BuilderWireframeBox';
+import TypewriterText from './TypewriterText';
 
 export default function AboutSection() {
   const philosophies = [
     {
-      title: 'Verification Over Hallucination',
-      desc: 'AI systems are only as valuable as their grounding. I design architectures with strict source attribution, deterministic fallbacks, and schema validation so that generated answers can be inspected and audited.',
+      title: '01 Sovereign Systems',
+      desc: 'Zero reliance on third-party black-box wrappers. Every layer built with deliberate necessity, deterministic fallbacks, and audit-ready execution.',
       icon: ShieldCheck,
+      color: 'text-red-400'
+    },
+    {
+      title: '02 First-Principles Architecture',
+      desc: 'Machine learning systems require robust backend orchestration, secure database boundaries, and responsive interfaces from database indexing to UI states.',
+      icon: Layers,
       color: 'text-sky-400'
     },
     {
-      title: 'Full-Stack Systems Discipline',
-      desc: 'Machine learning models need robust backend orchestration, secure database boundaries, and responsive interfaces. I engineer end-to-end applications from database indexing to UI states.',
-      icon: Layers,
-      color: 'text-violet-400'
-    },
-    {
-      title: 'Practical Pragmatism Over Hype',
-      desc: 'Rather than chasing theoretical hype, I build software that solves tangible problems: educational coordination (CampusOS), civic issue deduplication (CivicLens), and offline crop diagnosis (ZENETH).',
+      title: '03 Axiomatic Verification',
+      desc: 'Autonomous systems must verify actions against deterministic ground truths before client dispatch — 510 automated QA suites in CampusOS, 100/100 tests in CivicLens.',
       icon: Target,
       color: 'text-emerald-400'
     }
   ];
 
   return (
-    <section id="about" className="relative py-24 border-b border-white/[0.06]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="relative py-24 border-b border-white/[0.08] bg-[#050508]">
+      {/* Left Red Vertical Accent Line */}
+      <div className="vertical-accent-line hidden md:block" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pl-4 md:pl-12">
         
-        {/* Section Header */}
+        {/* Section Header matching the reference video */}
         <div className="flex flex-col items-start space-y-3 mb-16">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-sky-400">
-            <Terminal className="w-3.5 h-3.5" />
-            <span>01 // ENGINEERING PROFILE</span>
+          <div className="text-xs font-mono text-slate-500 tracking-wider">
+            //01.00 SEC_ABOUT INDEX [01/05]
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Architecture-First Mindset.{' '}
-            <span className="text-gradient-cyan">Grounded AI Execution.</span>
-          </h2>
-          <p className="text-base sm:text-lg text-slate-400 max-w-3xl">
-            A comprehensive overview of my academic foundation, technical journey, engineering philosophy, and aspirations in the international technology industry.
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-md bg-red-500/10 border border-red-500/30 text-xs font-mono text-red-400">
+            <span className="w-2 h-2 rounded-full bg-red-500" />
+            <span>ENGINEER PROFILE</span>
+          </div>
+          <BuilderWireframeBox
+            dimensionText="420 × 56"
+            startLayer={65}
+            endLayer={80}
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white">
+              <TypewriterText text="Background & Philosophy" startLayer={65} endLayer={80} />
+            </h2>
+          </BuilderWireframeBox>
+          <p className="text-base text-slate-400 max-w-3xl leading-relaxed">
+            A comprehensive overview of my academic foundation at Shoolini University, technical journey, engineering philosophy, and aspirations in the international technology industry.
           </p>
         </div>
 
@@ -59,50 +72,70 @@ export default function AboutSection() {
           {/* Narrative Column */}
           <div className="lg:col-span-7 space-y-6 text-slate-300 leading-relaxed text-base">
             
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <Brain className="w-5 h-5 text-sky-400" />
-                <span>Academic Foundation & Background</span>
-              </h3>
-              <p>
-                I am a Computer Science and Engineering undergraduate specializing in Artificial Intelligence at 
-                <strong className="text-white font-semibold"> Shoolini University</strong> (2025–2029) where I maintain a 
-                <strong className="text-sky-300 font-semibold font-mono"> 9.05 / 10 CGPA</strong>. My academic coursework encompasses 
-                Data Structures, Database Management Systems, Object-Oriented Programming, and discrete computational mathematics.
-              </p>
-              <p>
-                From my earliest coursework, my priority has been applying computer science principles to build working, testable software. I do not confine myself to theory or toy scripts; I explore how databases, networks, and neural reasoning pipelines integrate under real-world constraints.
-              </p>
-            </div>
+            {/* Paragraph 1 Box */}
+            <BuilderWireframeBox
+              dimensionText="560 × 120"
+              startLayer={72}
+              endLayer={95}
+            >
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
+                <h3 className="text-lg font-bold text-white flex items-center space-x-2">
+                  <Brain className="w-5 h-5 text-sky-400" />
+                  <span>Academic Foundation & Background</span>
+                </h3>
+                <p className="min-h-[72px]">
+                  <TypewriterText
+                    text="I am Krishna Kaushik — an AI engineer and computer science undergraduate specializing in Artificial Intelligence at Shoolini University (2025–2029) where I maintain a 9.05 / 10 CGPA. My academic coursework encompasses Data Structures, Database Management Systems, Object-Oriented Programming, and discrete computational mathematics."
+                    startLayer={72}
+                    endLayer={95}
+                  />
+                </p>
+                <p className="text-sm text-slate-400">
+                  From my earliest coursework, my priority has been applying computer science principles to build working, testable software. I do not confine myself to theory or toy scripts; I explore how databases, networks, and neural reasoning pipelines integrate under real-world constraints.
+                </p>
+              </div>
+            </BuilderWireframeBox>
 
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <Code2 className="w-5 h-5 text-violet-400" />
-                <span>The Technical Journey</span>
-              </h3>
-              <p>
-                My engineering path began with low-level systems programming in C and C++, where I mastered memory models, pointer manipulation, and Standard Template Library algorithms. This foundation culminated in <strong className="text-slate-100">ZENETH</strong>, an offline, memory-resident crop disease expert system written in native C++ with zero cloud reliance.
-              </p>
-              <p>
-                As AI models transitioned from classification benchmarks into generative reasoning engines, I expanded into full-stack AI engineering: building production REST microservices with <strong className="text-slate-100">FastAPI</strong>, implementing complex relational and vector schemas with <strong className="text-slate-100">PostgreSQL, Supabase, and pgvector</strong>, and developing responsive frontends with <strong className="text-slate-100">Next.js and TypeScript</strong>.
-              </p>
-            </div>
+            {/* Paragraph 2 Box */}
+            <BuilderWireframeBox
+              dimensionText="560 × 120"
+              startLayer={88}
+              endLayer={110}
+            >
+              <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
+                <h3 className="text-lg font-bold text-white flex items-center space-x-2">
+                  <Code2 className="w-5 h-5 text-red-400" />
+                  <span>The Technical Journey</span>
+                </h3>
+                <p className="min-h-[72px]">
+                  <TypewriterText
+                    text="However, my defining capabilities were forged in the terminal: completely hands-on in machine learning architectures, grounded multi-agent RAG pipelines with pgvector & Gemini, offline C++ rule engines, and hardened security layers."
+                    startLayer={88}
+                    endLayer={110}
+                  />
+                </p>
+                <p className="text-sm text-slate-400">
+                  My engineering path began with low-level systems programming in C and C++, culminating in ZENETH (an offline crop disease expert system with zero cloud reliance), expanding into full-stack AI engineering with Next.js, FastAPI, and PostgreSQL.
+                </p>
+              </div>
+            </BuilderWireframeBox>
 
-            <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/[0.08] space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <Compass className="w-5 h-5 text-emerald-400" />
-                <span>Global Engineering Ambition</span>
-              </h3>
-              <p>
-                My long-term ambition is to contribute to cutting-edge AI engineering and distributed systems teams at leading international technology companies such as Google, Microsoft, NVIDIA, and OpenAI. I am driven to tackle challenging problems in retrieval architectures, autonomous agent workflows, low-latency inference, and multimodal systems that millions of users rely upon daily.
-              </p>
-            </div>
+            {/* Quote Block from Video */}
+            <BuilderWireframeBox
+              dimensionText="540 × 60"
+              startLayer={98}
+              endLayer={115}
+            >
+              <div className="p-4 rounded-xl bg-red-500/[0.04] border-l-2 border-l-red-500 border-white/[0.08] italic text-slate-200 text-sm font-mono">
+                &ldquo;I design and deploy autonomous AI systems that operate 24/7 with persistent memory, multi-agent orchestration, and continuous self-verification &mdash; built from first principles, not frameworks.&rdquo;
+              </div>
+            </BuilderWireframeBox>
 
           </div>
 
           {/* Pillars Column */}
           <div className="lg:col-span-5 space-y-6">
-            <h3 className="text-sm font-mono uppercase tracking-wider text-slate-400">
+            <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400">
               Core Engineering Philosophies
             </h3>
 
@@ -110,29 +143,33 @@ export default function AboutSection() {
               {philosophies.map((item, idx) => {
                 const Icon = item.icon;
                 return (
-                  <div
+                  <BuilderWireframeBox
                     key={idx}
-                    className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:border-sky-500/30 transition-all duration-300 group"
+                    dimensionText="320 × 80"
+                    startLayer={75 + idx * 12}
+                    endLayer={95 + idx * 10}
                   >
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="p-2 rounded-lg bg-white/[0.03] border border-white/[0.08]">
-                        <Icon className={`w-4 h-4 ${item.color}`} />
+                    <div className="p-5 rounded-xl bg-white/[0.02] border border-white/[0.08] hover:border-red-500/30 transition-all duration-300 group">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="p-2 rounded-lg bg-white/[0.03] border border-white/[0.08]">
+                          <Icon className={`w-4 h-4 ${item.color}`} />
+                        </div>
+                        <h4 className="text-base font-bold text-white group-hover:text-red-400 transition-colors">
+                          {item.title}
+                        </h4>
                       </div>
-                      <h4 className="text-base font-bold text-white group-hover:text-sky-300 transition-colors">
-                        {item.title}
-                      </h4>
+                      <p className="text-sm text-slate-400 leading-relaxed pl-11">
+                        {item.desc}
+                      </p>
                     </div>
-                    <p className="text-sm text-slate-400 leading-relaxed pl-11">
-                      {item.desc}
-                    </p>
-                  </div>
+                  </BuilderWireframeBox>
                 );
               })}
             </div>
 
             {/* Quick Fact Sheet Box */}
-            <div className="p-5 rounded-xl bg-gradient-to-br from-sky-500/[0.05] via-violet-500/[0.03] to-transparent border border-sky-500/20 space-y-3 font-mono text-xs">
-              <div className="text-sky-400 font-semibold uppercase tracking-wider">
+            <div className="p-5 rounded-xl bg-gradient-to-br from-red-500/[0.05] via-white/[0.02] to-transparent border border-red-500/20 space-y-3 font-mono text-xs">
+              <div className="text-red-400 font-semibold uppercase tracking-wider">
                 Engineering Snapshot
               </div>
               <div className="space-y-2 text-slate-300">
@@ -146,11 +183,11 @@ export default function AboutSection() {
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/[0.04]">
                   <span className="text-slate-400">Internship</span>
-                  <span>Corizo (IIT Bombay Collab)</span>
+                  <span>Corizo (IIT Bombay Academic Collab)</span>
                 </div>
                 <div className="flex justify-between py-1 border-b border-white/[0.04]">
                   <span className="text-slate-400">Location</span>
-                  <span>India &bull; Open to Remote / Relocation</span>
+                  <span>India &bull; Global Opportunities</span>
                 </div>
                 <div className="flex justify-between py-1">
                   <span className="text-slate-400">Code Repositories</span>
@@ -158,7 +195,7 @@ export default function AboutSection() {
                     href="https://github.com/krishnakaushik1322007-ai"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sky-400 hover:underline flex items-center space-x-1"
+                    className="text-red-400 hover:underline flex items-center space-x-1"
                   >
                     <span>krishnakaushik1322007-ai</span>
                     <ArrowUpRight className="w-3 h-3" />
